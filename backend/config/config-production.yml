@@ -1,0 +1,13 @@
+generalDB:
+  Adapter: mysql
+  Password: saturno91
+  Username: sumaq
+  Port: "3306"
+
+metaDatabaseDB:
+  Adapter: mysql
+  Database: general
+  Host: 54.176.144.22
+  Password: saturno91
+  Username: sumaq
+  Port: "3306"

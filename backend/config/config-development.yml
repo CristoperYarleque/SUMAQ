@@ -1,0 +1,14 @@
+generalDB:
+  Adapter: mysql
+  Password: saturno91
+  Username: root
+  Port: "3306"
+
+
+metaDatabaseDB:
+  Adapter: mysql
+  Database: general
+  Host: 127.0.0.1
+  Password: saturno91
+  Username: root
+  Port: "3306"

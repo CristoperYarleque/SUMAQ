@@ -1,0 +1,21 @@
+root = "."
+
+[build]
+bin = "./go_app.out"
+cmd = "go build -o go_app.out -ldflags '-w -s -X main.env=development' server.go"
+delay = 1000
+exclude_dir = ["docker"]
+exclude_file = []
+exclude_regex = ["_test.go"]
+exclude_unchanged = false
+follow_symlink = false
+full_bin = ""
+include_dir = []
+include_ext = ["go"]
+kill_delay = "0s"
+log = "build-errors.log"
+send_interrupt = false
+stop_on_error = true
+
+[[watcher]]
+build_delay = "1000ms"
