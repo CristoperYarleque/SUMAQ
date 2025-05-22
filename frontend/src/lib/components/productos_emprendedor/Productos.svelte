@@ -3,6 +3,7 @@
   import { getProducts, getCategories, createProduct } from "$lib/api";
   import { token, users } from "$lib/stores/auth";
   import Tarjetas from "$lib/components/tarjetas/Tarjetas.svelte";
+  import Cargando from "$lib/components/cargando/Cargando.svelte";
 
   let tokenId = "";
   let entrepreneurId = 0;
@@ -16,15 +17,19 @@
     name = "",
     description = "",
     price = "";
+
+  let cargando = false;
   
 
   async function handleCategorias(token) {
     try {
+      cargando = true;
       const { data } = await getCategories(token);
       categorias = data;
       if (data.length > 0) {
         categoryId = data[0].CategoryId;
       }
+      cargando = false;
     } catch (err) {
       console.log("err", err);
     }
@@ -32,8 +37,10 @@
 
   async function handleProducts(tokenId) {
     try {
+      cargando = true;
       const { data } = await getProducts(tokenId, entrepreneurId, 0);
       products = data;
+      cargando = false;
     } catch (error) {
       console.log("error", error);
     }
@@ -70,6 +77,7 @@
           categoryId = categorias[0].CategoryId;
         }
       }
+      await handleProducts(tokenId);
     } catch (error) {
       console.log("error", error);
     }
@@ -94,7 +102,8 @@
     await handleProducts(tokenId);
   });
 </script>
-<div>
+
+<div class="container_productos_emprendedor">
   <div>
     <form on:submit|preventDefault={handleSubmit}>
       <input
@@ -135,7 +144,7 @@
     {/if}
   </div>
   <div class="container_productos">
-    <h1>Productos</h1>
+    <h1>PRODUCTOS</h1>
     {#each products as product}
       <Tarjetas {product} on:delete={handleDelete} />
     {/each}
@@ -144,6 +153,10 @@
 
 
 <style>
+  .container_productos_emprendedor {
+    height: 100vh;
+    overflow: hidden;
+  }
   .container_productos {
     overflow-y: auto;
     height: 100%;

@@ -2,7 +2,6 @@
   import { loginUser } from "$lib/api";
   import { login } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
-  import { page } from "$app/state";
 
   let email = "",
     password = "",
@@ -15,6 +14,9 @@
       login(data);
       goto(data.Role === "entrepreneur" ? "/emprendedor" : "/cliente");
     } catch (err) {
+      email = "";
+      password = "";
+      role = "entrepreneur";
       error = err.message;
     }
   };

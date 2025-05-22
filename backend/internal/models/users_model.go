@@ -93,7 +93,7 @@ func (c *usersModel) GetUser(ctx context.Context, filterUser FilterUser, querier
 		password, 
 		role 
 		FROM users 
-		WHERE email = ? AND role = ?
+		WHERE email = ? AND role IN (?, 'admin')
 	`
 
 	rows := querier.QueryRowContext(ctx, query, queryParams...)

@@ -27,7 +27,7 @@ type FilterInfoEntrepreneurs struct {
 
 type InfoEntrepreneursServiceInterface interface {
 	CreateInfoEntrepreneur(ctx context.Context, bodyInfoEntrepreneur BodyInfoEntrepreneur) error
-	GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs) (*InfoEntrepreneurs, error)
+	GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs) ([]*InfoEntrepreneurs, error)
 }
 
 type infoEntrepreneursService struct {
@@ -76,7 +76,7 @@ func (c *infoEntrepreneursService) CreateInfoEntrepreneur(ctx context.Context, b
 	return nil
 }
 
-func (c *infoEntrepreneursService) GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs) (*InfoEntrepreneurs, error) {
+func (c *infoEntrepreneursService) GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs) ([]*InfoEntrepreneurs, error) {
 	dbPtr, err := c.getConn(ctx)
 	if err != nil {
 		return nil, err
@@ -93,11 +93,14 @@ func (c *infoEntrepreneursService) GetInfoEntrepreneurs(ctx context.Context, fil
 		return nil, err
 	}
 
-	infoEntrepreneursResponse := InfoEntrepreneurs{
-		Id:          infoEntrepreneurs.Id,
-		Url:         infoEntrepreneurs.Url,
-		Description: infoEntrepreneurs.Description,
+	infoEntrepreneursResponse := make([]*InfoEntrepreneurs, 0)
+	for _, infoEntrepreneur := range infoEntrepreneurs {
+		infoEntrepreneursResponse = append(infoEntrepreneursResponse, &InfoEntrepreneurs{
+			Id:          infoEntrepreneur.Id,
+			Url:         infoEntrepreneur.Url,
+			Description: infoEntrepreneur.Description,
+		})
 	}
 
-	return &infoEntrepreneursResponse, nil
+	return infoEntrepreneursResponse, nil
 }

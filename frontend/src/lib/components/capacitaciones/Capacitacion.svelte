@@ -4,9 +4,10 @@
   import { getCapacitaciones, createCapacitacion } from "$lib/api";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
 
-  let capacitacion = {};
+  let capacitacion = [];
   let tokenId = "";
   let entrepreneurId = "";
+  let role = "";
   let type = "training";
   let cargando = false;
 
@@ -52,6 +53,7 @@
     users.subscribe(async (user) => {
       if (user) {
         entrepreneurId = user.userId;
+        role = user.role;
       }
     });
     await handleCapacitaciones(tokenId, entrepreneurId, type);
@@ -59,31 +61,35 @@
 </script>
 
 <div>
-  <div>
-    <form on:submit|preventDefault={handleSubmit}>
-      <input
-        type="text"
-        name="url"
-        bind:value={url}
-        placeholder="Url"
-        required
-      />
-      <input
-        type="text"
-        name="description"
-        bind:value={description}
-        placeholder="Descripción"
-      />
-      <button type="submit">Guardar</button>
-    </form>
-  </div>
+  {#if role === "admin"}
+    <div>
+      <form on:submit|preventDefault={handleSubmit}>
+        <input
+          type="text"
+          name="url"
+          bind:value={url}
+          placeholder="Url"
+          required
+        />
+        <input
+          type="text"
+          name="description"
+          bind:value={description}
+          placeholder="Descripción"
+        />
+        <button type="submit">Guardar</button>
+      </form>
+    </div>
+  {/if}
   <div>
     <h1>CAPACITACIONES</h1>
     {#if cargando}
       <Cargando />
     {:else}
-      <p>{capacitacion.Url}</p>
-      <p>{capacitacion.Description}</p>
+      {#each capacitacion as capacitacion}
+        <p>{capacitacion.Url}</p>
+        <p>{capacitacion.Description}</p>
+      {/each}
     {/if}
   </div>
 </div>

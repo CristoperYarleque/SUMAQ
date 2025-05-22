@@ -1,43 +1,66 @@
 <script>
   import { LogOut } from "lucide-svelte";
+  import { onMount } from "svelte";
   import Capacitacion from "$lib/components/capacitaciones/Capacitacion.svelte";
   import Bienestar from "$lib/components/bienestar_emocional/Bienestar.svelte";
   import Productos from "$lib/components/productos_emprendedor/Productos.svelte";
-  import { logout } from "$lib/stores/auth";
+  import Emprendedor from "$lib/components/emprendedor/Emprendedor.svelte";
+  import { logout, users } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
 
   let categorias = false;
   let capacitaciones = false;
   let bienestarEmocional = false;
+  let emprendedor = false;
+  let name = "";
 
   function handleCategorias() {
     categorias = true;
     capacitaciones = false;
     bienestarEmocional = false;
+    emprendedor = false;
   }
 
   function handleCapacitaciones() {
     categorias = false;
     capacitaciones = true;
     bienestarEmocional = false;
+    emprendedor = false;
   }
 
   function handleBienestarEmocional() {
     categorias = false;
     capacitaciones = false;
     bienestarEmocional = true;
+    emprendedor = false;
+  }
+
+  function handleEmprendedor() {
+    categorias = false;
+    capacitaciones = false;
+    bienestarEmocional = false;
+    emprendedor = true;
   }
 
   function handleLogout() {
     logout();
     goto("/login");
   }
+
+  onMount(() => {
+    users.subscribe((user) => {
+      name = user.name;
+    });
+  });
 </script>
 
 <div class="container_emprendedor">
   <div class="container_emprendedor_left">
+    <button class="button_emprendedor" on:click={handleEmprendedor}
+      >{name.toUpperCase()}</button
+    >
     <button class="button_emprendedor" on:click={handleCategorias}
-      >CATEGORIAS</button
+      >INVENTARIO</button
     >
     <button class="button_emprendedor" on:click={handleCapacitaciones}
       >CAPACITACIONES</button
@@ -50,7 +73,9 @@
     >
   </div>
   <div class="container_emprendedor_right">
-    {#if categorias}
+    {#if emprendedor}
+      <Emprendedor />
+    {:else if categorias}
       <Productos />
     {:else if capacitaciones}
       <Capacitacion />
@@ -74,7 +99,6 @@
   }
   .container_emprendedor_right {
     height: 100vh;
-    overflow: hidden;
   }
 
   .container_emprendedor_left .button_emprendedor {

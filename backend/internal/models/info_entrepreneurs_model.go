@@ -28,7 +28,7 @@ type FilterInfoEntrepreneurs struct {
 
 type InfoEntrepreneursModelInterface interface {
 	CreateInfoEntrepreneur(ctx context.Context, bodyInfoEntrepreneur BodyInfoEntrepreneur, querier interfaces.SQLQuerier) error
-	GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs, querier interfaces.SQLQuerier) (*InfoEntrepreneurs, error)
+	GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs, querier interfaces.SQLQuerier) ([]*InfoEntrepreneurs, error)
 }
 type infoEntrepreneursModel struct {
 	Db *interfaces.SQLConnInterface
@@ -73,10 +73,23 @@ func (c *infoEntrepreneursModel) CreateInfoEntrepreneur(ctx context.Context, bod
 	return nil
 }
 
-func (c *infoEntrepreneursModel) GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs, querier interfaces.SQLQuerier) (*InfoEntrepreneurs, error) {
+func (c *infoEntrepreneursModel) GetInfoEntrepreneurs(ctx context.Context, filterInfoEntrepreneurs FilterInfoEntrepreneurs, querier interfaces.SQLQuerier) ([]*InfoEntrepreneurs, error) {
+	var (
+		limit string
+		where string
+	)
+
 	queryParams := []interface{}{
-		filterInfoEntrepreneurs.EntrepreneurId,
 		filterInfoEntrepreneurs.Type,
+	}
+
+	if filterInfoEntrepreneurs.Type == "info" {
+		where = " AND entrepreneur_id = ? "
+		limit = " LIMIT 1 "
+		queryParams = append(queryParams, filterInfoEntrepreneurs.EntrepreneurId)
+	} else {
+		where = ""
+		limit = " LIMIT 3 "
 	}
 
 	query := `
@@ -85,24 +98,38 @@ func (c *infoEntrepreneursModel) GetInfoEntrepreneurs(ctx context.Context, filte
 		url, 
 		description 
 		FROM info_entrepreneur
-		WHERE entrepreneur_id = ?
-		AND type = ?
+		WHERE type = ?
+		` + where + `
 		ORDER BY id DESC
-		LIMIT 1
+		` + limit + `
 	`
+	stmt, err := querier.PrepareContext(ctx, query)
+	if err != nil {
+		log.Println("[FATAL]", "Error prepare Query:", err.Error())
+		return nil, err
+	}
+	defer stmt.Close()
 
-	rows := querier.QueryRowContext(ctx, query, queryParams...)
-
-	infoEntrepreneurs := &InfoEntrepreneurs{}
-	err := rows.Scan(
-		&infoEntrepreneurs.Id,
-		&infoEntrepreneurs.Url,
-		&infoEntrepreneurs.Description,
-	)
-
+	rows, err := stmt.QueryContext(ctx, queryParams...)
 	if err != nil {
 		log.Printf("[FATAL] Error executing query: %v", err)
 		return nil, err
+	}
+	defer rows.Close()
+
+	infoEntrepreneurs := make([]*InfoEntrepreneurs, 0)
+	for rows.Next() {
+		infoEntrepreneur := InfoEntrepreneurs{}
+		err := rows.Scan(
+			&infoEntrepreneur.Id,
+			&infoEntrepreneur.Url,
+			&infoEntrepreneur.Description,
+		)
+		if err != nil {
+			log.Println("Error Scan:", err.Error())
+			return nil, err
+		}
+		infoEntrepreneurs = append(infoEntrepreneurs, &infoEntrepreneur)
 	}
 
 	return infoEntrepreneurs, nil
