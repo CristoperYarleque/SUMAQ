@@ -31,6 +31,7 @@
       }
       cargando = false;
     } catch (err) {
+      cargando = false;
       console.log("err", err);
     }
   }
@@ -42,6 +43,7 @@
       products = data;
       cargando = false;
     } catch (error) {
+      cargando = false;
       console.log("error", error);
     }
   }

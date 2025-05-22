@@ -139,3 +139,21 @@ export async function createEmprendedor(token, data) {
   if (!res.ok) throw new Error("Error al crear emprendedor");
   return res.json();
 }
+
+export async function getPromociones(token, startDate, endDate) {
+  const res = await authFetch(`${API_BASE}/promotions?startDate=${startDate}&endDate=${endDate}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "application/json",
+  });
+  if (!res.ok) throw new Error("Error al obtener promociones");
+  return res.json();
+}
+
+export async function getNoticias(token, startDate, endDate) {
+  const res = await authFetch(`${API_BASE}/news?startDate=${startDate}&endDate=${endDate}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "application/json",
+  });
+  if (!res.ok) throw new Error("Error al obtener noticias");
+  return res.json();
+}
