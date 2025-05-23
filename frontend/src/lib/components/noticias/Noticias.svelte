@@ -42,7 +42,7 @@
     });
   </script>
   
-  <div>
+  <div class="container_noticias">
     <h1>NOTICIAS</h1>
     {#if cargando}
       <Cargando />
@@ -56,5 +56,10 @@
   </div>
 
   <style>
+    .container_noticias {
+      height: 100vh;
+      overflow: hidden;
+      overflow-y: auto;
+    }
   </style>
   

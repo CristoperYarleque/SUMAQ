@@ -60,7 +60,7 @@
   });
 </script>
 
-<div>
+<div class="container_bienestar_emocional">
   {#if role === "admin"}
     <div>
       <form on:submit|preventDefault={handleSubmit}>
@@ -81,7 +81,7 @@
       </form>
     </div>
   {/if}
-  <div>
+  <div class="container_bienestar_emocional_info">
     <h1>BIENESTAR EMOCIONAL</h1>
     {#if cargando}
       <Cargando />
@@ -95,4 +95,13 @@
 </div>
 
 <style>
+  .container_bienestar_emocional {
+    height: 100vh;
+    overflow: hidden;
+  }
+  .container_bienestar_emocional_info {
+    border: 1px solid #ccc;
+    height: 100%;
+    overflow-y: auto;
+  }
 </style>

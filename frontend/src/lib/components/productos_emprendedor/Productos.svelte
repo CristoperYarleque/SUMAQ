@@ -147,9 +147,13 @@
   </div>
   <div class="container_productos">
     <h1>PRODUCTOS</h1>
-    {#each products as product}
-      <Tarjetas {product} on:delete={handleDelete} />
-    {/each}
+    {#if cargando}
+      <Cargando />
+    {:else}
+      {#each products as product}
+        <Tarjetas {product} on:delete={handleDelete} />
+      {/each}
+    {/if}
   </div>
 </div>
 
@@ -160,6 +164,7 @@
     overflow: hidden;
   }
   .container_productos {
+    border: 1px solid #ccc;
     overflow-y: auto;
     height: 100%;
   }

@@ -8,35 +8,35 @@
   import { logout, users } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
 
-  let categorias = false;
+  let productos = false;
   let capacitaciones = false;
   let bienestarEmocional = false;
   let emprendedor = false;
   let name = "";
 
-  function handleCategorias() {
-    categorias = true;
+  function handleProductos() {
+    productos = true;
     capacitaciones = false;
     bienestarEmocional = false;
     emprendedor = false;
   }
 
   function handleCapacitaciones() {
-    categorias = false;
+    productos = false;
     capacitaciones = true;
     bienestarEmocional = false;
     emprendedor = false;
   }
 
   function handleBienestarEmocional() {
-    categorias = false;
+    productos = false;
     capacitaciones = false;
     bienestarEmocional = true;
     emprendedor = false;
   }
 
   function handleEmprendedor() {
-    categorias = false;
+    productos = false;
     capacitaciones = false;
     bienestarEmocional = false;
     emprendedor = true;
@@ -59,7 +59,7 @@
     <button class="button_emprendedor" on:click={handleEmprendedor}
       >{name.toUpperCase()}</button
     >
-    <button class="button_emprendedor" on:click={handleCategorias}
+    <button class="button_emprendedor" on:click={handleProductos}
       >INVENTARIO</button
     >
     <button class="button_emprendedor" on:click={handleCapacitaciones}
@@ -75,7 +75,7 @@
   <div class="container_emprendedor_right">
     {#if emprendedor}
       <Emprendedor />
-    {:else if categorias}
+    {:else if productos}
       <Productos />
     {:else if capacitaciones}
       <Capacitacion />
@@ -95,10 +95,11 @@
     flex-direction: column;
     justify-content: space-around;
     height: 100vh;
-    border-right: 3px solid #00000074;
+    border-right: 0.5px solid #ccc;
   }
   .container_emprendedor_right {
     height: 100vh;
+    border-left: 0.5px solid #ccc;
   }
 
   .container_emprendedor_left .button_emprendedor {

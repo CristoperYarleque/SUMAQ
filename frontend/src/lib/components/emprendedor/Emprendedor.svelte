@@ -58,40 +58,47 @@
   });
 </script>
 
-<div>
+<div class="container_emprendedor">
   <div>
-    <div>
-      <form on:submit|preventDefault={handleSubmit}>
-        <input
-          type="text"
-          name="url"
-          bind:value={url}
-          placeholder="Url"
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          bind:value={description}
-          placeholder="Descripción"
-        />
-        <button type="submit">Guardar</button>
-      </form>
-    </div>
+    <form on:submit|preventDefault={handleSubmit}>
+      <input
+        type="text"
+        name="url"
+        bind:value={url}
+        placeholder="Url"
+        required
+      />
+      <input
+        type="text"
+        name="description"
+        bind:value={description}
+        placeholder="Descripción"
+      />
+      <button type="submit">Guardar</button>
+    </form>
+  </div>
 
-    <div>
-      <h1>EMPRENDEDOR</h1>
-      {#if cargando}
-        <Cargando />
-      {:else}
-        {#each emprendedores as emprendedor}
-          <p>{emprendedor.Url}</p>
-          <p>{emprendedor.Description}</p>
-        {/each}
-      {/if}
-    </div>
+  <div class="container_emprendedor_info">
+    <h1>EMPRENDEDOR</h1>
+    {#if cargando}
+      <Cargando />
+    {:else}
+      {#each emprendedores as emprendedor}
+        <p>{emprendedor.Url}</p>
+        <p>{emprendedor.Description}</p>
+      {/each}
+    {/if}
   </div>
 </div>
 
 <style>
+  .container_emprendedor {
+    height: 100vh;
+    overflow: hidden;
+  }
+  .container_emprendedor_info {
+    border: 1px solid #ccc;
+    height: 100%;
+    overflow-y: auto;
+  }
 </style>

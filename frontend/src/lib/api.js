@@ -157,3 +157,13 @@ export async function getNoticias(token, startDate, endDate) {
   if (!res.ok) throw new Error("Error al obtener noticias");
   return res.json();
 }
+
+
+export async function getEmprendedorByCategory(token, categoryId) {
+  const res = await authFetch(`${API_BASE}/entrepreneurs?categoryId=${categoryId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "application/json",
+  });
+  if (!res.ok) throw new Error("Error al obtener emprendedor por categoría");
+  return res.json();
+}

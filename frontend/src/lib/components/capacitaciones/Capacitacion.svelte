@@ -60,7 +60,7 @@
   });
 </script>
 
-<div>
+<div class="container_capacitaciones">
   {#if role === "admin"}
     <div>
       <form on:submit|preventDefault={handleSubmit}>
@@ -81,7 +81,7 @@
       </form>
     </div>
   {/if}
-  <div>
+  <div class="container_capacitaciones_info">
     <h1>CAPACITACIONES</h1>
     {#if cargando}
       <Cargando />
@@ -95,4 +95,13 @@
 </div>
 
 <style>
+  .container_capacitaciones {
+    height: 100vh;
+    overflow: hidden;
+  }
+  .container_capacitaciones_info {
+    border: 1px solid #ccc;
+    height: 100%;
+    overflow-y: auto;
+  }
 </style>
