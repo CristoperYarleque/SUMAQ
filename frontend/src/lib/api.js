@@ -167,3 +167,12 @@ export async function getEmprendedorByCategory(token, categoryId) {
   if (!res.ok) throw new Error("Error al obtener emprendedor por categoría");
   return res.json();
 }
+
+export async function getChatbot(token) {
+  const res = await authFetch(`${API_BASE}/chatbot`, {
+    headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "application/json",
+  });
+  if (!res.ok) throw new Error("Error al obtener chatbot");
+  return res.json();
+}

@@ -11,7 +11,7 @@
     try {
       const { data } = await loginUser({ email, password, role });
       login(data);
-      goto(data.Role === "entrepreneur" ? "/emprendedor" : "/cliente");
+      goto(data.Role === "entrepreneur" || data.Role === "admin" ? "/emprendedor" : "/cliente");
     } catch (err) {
       email = "";
       password = "";

@@ -4,7 +4,7 @@
   
     onMount(() => {
       setTimeout(() => {
-        goto("/"); // o "/cliente" o donde quieras redirigir
+        goto("/");
       }, 2500);
     });
   </script>

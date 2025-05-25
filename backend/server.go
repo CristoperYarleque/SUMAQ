@@ -70,6 +70,7 @@ func main() {
 	v1Router.Mount("/products", config.ProductsRouter())
 	v1Router.Mount("/news", config.NewsRouter())
 	v1Router.Mount("/promotions", config.PromotionsRouter())
+	v1Router.Mount("/chatbot", config.ChatbotRouter())
 
 	r.Mount("/v1", v1Router)
 

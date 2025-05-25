@@ -5,6 +5,7 @@
   import Bienestar from "$lib/components/bienestar_emocional/Bienestar.svelte";
   import Productos from "$lib/components/productos_emprendedor/Productos.svelte";
   import Emprendedor from "$lib/components/emprendedor/Emprendedor.svelte";
+  import Chatbot from "$lib/components/chatbot/Chatbot.svelte";
   import { logout, users } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
 
@@ -73,6 +74,7 @@
     >
   </div>
   <div class="container_emprendedor_right">
+    <Chatbot />
     {#if emprendedor}
       <Emprendedor />
     {:else if productos}
