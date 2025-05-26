@@ -109,9 +109,7 @@
 
 <style>
   :root {
-    /* --primary-color: #df9b7d; */
     --primary-color: #EBB2BD;
-    /* --secondary-color: #83927e25; */
     --secondary-color: #EDE9E4;
     --text-color: #333;
     --hover-color: #f29dae;

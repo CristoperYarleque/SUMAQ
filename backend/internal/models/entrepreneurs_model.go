@@ -11,6 +11,7 @@ type Entrepreneurs struct {
 	Id    int
 	Name  string
 	Email string
+	Url   string
 }
 
 type FilterEntrepreneurs struct {
@@ -37,7 +38,8 @@ func (c *entrepreneursModel) GetEntrepreneurs(ctx context.Context, filterEntrepr
 		SELECT 
 		u.id, 
 		u.name, 
-		u.email 
+		u.email,
+		u.url
 		FROM users u
 		INNER JOIN products p ON p.entrepreneur_id = u.id
 		WHERE p.category_id = ?
@@ -66,6 +68,7 @@ func (c *entrepreneursModel) GetEntrepreneurs(ctx context.Context, filterEntrepr
 			&entrepreneur.Id,
 			&entrepreneur.Name,
 			&entrepreneur.Email,
+			&entrepreneur.Url,
 		)
 		if err != nil {
 			log.Println("Error Scan:", err.Error())

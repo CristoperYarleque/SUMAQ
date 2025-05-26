@@ -11,6 +11,7 @@ type Entrepreneurs struct {
 	Id    int
 	Name  string
 	Email string
+	Url   string
 }
 
 type FilterEntrepreneurs struct {
@@ -68,6 +69,7 @@ func (c *entrepreneursService) GetEntrepreneurs(ctx context.Context, filterEntre
 			Id:    entrepreneur.Id,
 			Name:  entrepreneur.Name,
 			Email: entrepreneur.Email,
+			Url:   entrepreneur.Url,
 		}
 	}
 

@@ -69,16 +69,12 @@
       min-height: 100vh;
       overflow-y: auto;
       .noticias_titulo {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
         color: var(--title-color_1);
       }
-    }
-  
-    .container_noticias h1 {
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-      color: #222; /* Color más sobrio */
-      font-weight: 700;
     }
   
     .noticias_grid {

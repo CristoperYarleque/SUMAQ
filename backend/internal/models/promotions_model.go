@@ -11,6 +11,7 @@ import (
 type Promotion struct {
 	PromotionId int
 	Description string
+	Url         string
 	StartDate   string
 	EndDate     string
 }
@@ -83,7 +84,8 @@ func (c *promotionsModel) GetPromotions(ctx context.Context, filterPromotions Fi
 		id, 
 		description, 
 		start_date,
-		end_date
+		end_date,
+		url
 		FROM promotions
 		WHERE start_date >= ? 
 		AND end_date <= ? 
@@ -112,6 +114,7 @@ func (c *promotionsModel) GetPromotions(ctx context.Context, filterPromotions Fi
 			&promotion.Description,
 			&promotion.StartDate,
 			&promotion.EndDate,
+			&promotion.Url,
 		)
 		if err != nil {
 			log.Println("Error Scan:", err.Error())

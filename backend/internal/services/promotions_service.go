@@ -13,6 +13,7 @@ type Promotion struct {
 	Description string
 	StartDate   string
 	EndDate     string
+	Url         string
 }
 
 type BodyPromotion struct {
@@ -102,6 +103,7 @@ func (c *promotionsService) GetPromotions(ctx context.Context, filterPromotions 
 			Description: promotion.Description,
 			StartDate:   promotion.StartDate,
 			EndDate:     promotion.EndDate,
+			Url:         promotion.Url,
 		}
 	}
 
