@@ -84,6 +84,12 @@
 </div>
 
 <style>
+  :root {
+    --primary-color: #EBB2BD;
+    --secondary-color: #EDE9E4;
+    --login-color: #A0BEA5;
+    --title-color_1: #B17D62;
+  }
   .container {
     display: flex;
     height: 100vh;
@@ -92,7 +98,7 @@
 
   .illustration {
     flex: 1;
-    background-color: #DF9A7D;
+    background-color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -120,12 +126,13 @@
     flex-direction: column;
     justify-content: center;
     padding: 3rem;
+    background-color: var(--secondary-color);
   }
 
   .login-form h1 {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
-    color: #3e4a3c;
+    color: var(--title-color_1);
   }
 
   .inputregister {
@@ -141,7 +148,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 1.5rem;
-    background: #f1e8e1;
+    background: #ffffff;
     border-radius: 10px;
     overflow: hidden;
   }
@@ -157,7 +164,7 @@
   }
 
   .role-toggle label.active {
-    background: #DF9A7D;
+    background: var(--primary-color);
     color: white;
   }
 
@@ -169,7 +176,7 @@
     width: 100%;
     padding: 1rem;
     font-size: 1.2rem;
-    background-color: #83927e;
+    background-color: var(--login-color);
     color: white;
     border: none;
     border-radius: 10px;

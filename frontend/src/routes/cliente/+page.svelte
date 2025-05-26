@@ -12,7 +12,7 @@
   import { cart } from "$lib/stores/cart";
 
   let productos = false;
-  let noticias = false;
+  let noticias = true;
   let promociones = false;
   let cartComponent = false;
   let resumenComponent = false;
@@ -75,19 +75,16 @@
 
 <div class="container_cliente">
   <div class="container_cliente_left">
-    <!-- <button class="button_cliente">{name.toUpperCase()}</button> -->
     <button class="button_cliente" on:click={handleProductos}>PRODUCTOS</button>
     <button class="button_cliente" on:click={handleNoticias}>NOTICIAS</button>
     <button class="button_cliente" on:click={handlePromociones}>PROMOCIONES</button>
-    <button class="button_logout" on:click={handleLogout}
-      >CERRAR SESIÓN <LogOut class="w-1 h-1" /></button
-    >
+    <button class="button_logout" on:click={handleLogout}>
+      CERRAR SESIÓN <LogOut size="20" />
+    </button>
   </div>
   <div class="container_cliente_right">
-
-      
     <div class="container_cliente_right_header">
-      <p>{name.toUpperCase()}</p>
+      <p class="nombre_usuario">{name.toUpperCase()}</p>
       <div class="floating_cart" on:click={handleCart}>
         <ShoppingCart /> {
           $cart.reduce((total, item) => total + item.cantidad, 0)
@@ -111,82 +108,98 @@
 </div>
 
 <style>
+  :root {
+    /* --primary-color: #df9b7d; */
+    --primary-color: #EBB2BD;
+    /* --secondary-color: #83927e25; */
+    --secondary-color: #EDE9E4;
+    --text-color: #333;
+    --hover-color: #f29dae;
+    --background-light: #f9f9f9;
+  }
+
   .container_cliente {
     display: grid;
     grid-template-columns: 1fr 3fr;
+    height: 100vh;
+    background-color: var(--background-light);
   }
+
   .container_cliente_left {
+    background-color: var(--primary-color);
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    height: 100vh;
-    border-right: 0.5px solid #ccc;
-  }
-  .container_cliente_right {
-    height: 100vh;
-    border-left: 0.5px solid #ccc;
-  }
-
-  .container_cliente_left .button_cliente {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #000000;
-    text-align: center;
-    cursor: pointer;
-    transition: font-size 0.3s ease;
-    background: none;
-    border: none;
-    padding: 0;
-    &:hover {
-      font-size: 1.1rem;
-    }
-  }
-
-  .container_cliente_left .button_logout {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #000000;
-    text-align: center;
-    cursor: pointer;
-    width: 60%;
-    border-radius: 10px;
-    border: none;
-    margin: 0 auto;
-    padding: 10px;
-    transition: all 0.3s ease;
-    &:hover {
-      background-color: #000000;
-      color: #ffffff;
-      width: 65%;
-    }
-  }
-  .floating_cart {
-    position: fixed;
-    right: 50px;
-    top: 30px;
-    background-color: #000;
+    justify-content: space-around;
     color: white;
-    padding: 7px 10px;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .nombre_usuario {
+    font-weight: 800;
+    color: var(--title-color_1);
+  }
+
+  .button_cliente {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: none;
+    border: 2px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    &:hover {
-      background-color: #000000;
-      color: #ffffff;
-      padding: 8px 11px;
-    }
+  }
+
+  .button_cliente:hover {
+    background-color: white;
+    color: var(--primary-color);
+  }
+
+  .button_logout {
+    background-color: white;
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .button_logout:hover {
+    background-color: var(--hover-color);
+    color: white;
+  }
+
+  .container_cliente_right {
+    background-color: var(--secondary-color);
+    position: relative;
+    overflow-y: auto;
   }
 
   .container_cliente_right_header {
     position: fixed;
-    top: -12px;
-    right: 10px;
-    z-index: 9999;
+    top: 1rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+
+  .floating_cart {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .floating_cart:hover {
+    background-color: var(--hover-color);
   }
 </style>
