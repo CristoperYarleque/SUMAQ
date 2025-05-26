@@ -55,7 +55,7 @@
   });
 </script>
 
-<div class="container_emprendedor">
+<!-- <div class="container_emprendedor">
   <div class="container_emprendedor_left">
     <button class="button_emprendedor" on:click={handleEmprendedor}
       >{name.toUpperCase()}</button
@@ -85,59 +85,99 @@
       <Bienestar />
     {/if}
   </div>
+</div> -->
+
+<div class="container_emprendedor">
+  <div class="container_emprendedor_left">
+    <button class="button_emprendedor" on:click={handleEmprendedor}>{name.toUpperCase()}</button>
+    <button class="button_emprendedor" on:click={handleProductos}>INVENTARIO</button>
+    <button class="button_emprendedor" on:click={handleCapacitaciones}>CAPACITACIONES</button>
+    <button class="button_emprendedor" on:click={handleBienestarEmocional}>BIENESTAR EMOCIONAL</button>
+    <button class="button_logout" on:click={handleLogout}>
+      CERRAR SESIÓN <LogOut size="20" />
+    </button>
+  </div>
+  <div class="container_emprendedor_right">
+    <Chatbot />
+    {#if emprendedor}
+      <Emprendedor />
+    {:else if productos}
+      <Productos />
+    {:else if capacitaciones}
+      <Capacitacion />
+    {:else if bienestarEmocional}
+      <Bienestar />
+    {/if}
+  </div>
 </div>
 
+
+
+
 <style>
-  .container_emprendedor {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-  }
-  .container_emprendedor_left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 100vh;
-    border-right: 0.5px solid #ccc;
-  }
-  .container_emprendedor_right {
-    height: 100vh;
-    border-left: 0.5px solid #ccc;
-  }
+:root {
+  --primary-color: #EBB2BD;
+  --secondary-color: #EDE9E4;
+  --text-color: #333;
+  --hover-color: #f29dae;
+  --background-light: #f9f9f9;
+}
 
-  .container_emprendedor_left .button_emprendedor {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #000000;
-    text-align: center;
-    cursor: pointer;
-    transition: font-size 0.3s ease;
-    background: none;
-    border: none;
-    padding: 0;
-    &:hover {
-      font-size: 1.1rem;
-    }
-  }
+.container_emprendedor {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  height: 100vh;
+  background-color: var(--background-light);
+}
 
-  .container_emprendedor_left .button_logout {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #000000;
-    text-align: center;
-    cursor: pointer;
-    width: 60%;
-    border-radius: 10px;
-    border: none;
-    margin: 0 auto;
-    padding: 10px;
-    transition: all 0.3s ease;
-    &:hover {
-      background-color: #000000;
-      color: #ffffff;
-      width: 65%;
-    }
-  }
+.container_emprendedor_left {
+  background-color: var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+}
+
+
+.button_emprendedor {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: none;
+  border: 2px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button_emprendedor:hover {
+  background-color: white;
+  color: var(--primary-color);
+}
+
+.button_logout {
+  background-color: white;
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button_logout:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.container_emprendedor_right {
+  background-color: var(--secondary-color);
+  overflow-y: auto;
+  position: relative;
+}
+  
 </style>
