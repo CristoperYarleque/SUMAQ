@@ -1,11 +1,15 @@
 <script>
   import { onMount } from "svelte";
   import { token } from "$lib/stores/auth";
-  import { getCategories, getEmprendedorByCategory, getProducts, getEmprendedores } from "$lib/api";
+  import {
+    getCategories,
+    getEmprendedorByCategory,
+    getProducts,
+    getEmprendedores,
+  } from "$lib/api";
   import { getEmbedUrl } from "$lib/helpers/utils";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
   import { addToCart } from "$lib/stores/cart";
- 
 
   let tokenId = "";
   let categorias = [];
@@ -96,8 +100,10 @@
       <Cargando />
     {:else}
       {#each categorias as categoria}
-        <button class:selected={selectedCategoryId === categoria.CategoryId} 
-                on:click={() => handleEmprendedorByCategory(categoria.CategoryId)}>
+        <button
+          class:selected={selectedCategoryId === categoria.CategoryId}
+          on:click={() => handleEmprendedorByCategory(categoria.CategoryId)}
+        >
           {categoria.Name}
         </button>
       {/each}
@@ -112,12 +118,22 @@
         <div class="emprendedores_grid">
           {#each emprendedoresPorCategoria as emprendedor}
             <div class="emprendedor_card">
-              <img src={emprendedor.Url} alt={emprendedor.Name} class="emprendedor_img" />
+              <img
+                src={emprendedor.Url}
+                alt={emprendedor.Name}
+                class="emprendedor_img"
+              />
               <h3>{emprendedor.Name}</h3>
               <p>{emprendedor.Email}</p>
               <div>
-                <button on:click={() => handleProducts(selectedCategoryId, emprendedor.Id)}>Productos</button>
-                <button on:click={() => handleEntrepreneurInfo(emprendedor.Id)}>Información</button>
+                <button
+                  on:click={() =>
+                    handleProducts(selectedCategoryId, emprendedor.Id)}
+                  >Productos</button
+                >
+                <button on:click={() => handleEntrepreneurInfo(emprendedor.Id)}
+                  >Información</button
+                >
               </div>
             </div>
           {/each}
@@ -154,25 +170,26 @@
               <h4>{producto.Name}</h4>
               <p>{producto.Description}</p>
               <p class="precio">S/ {producto.Price.toFixed(2)}</p>
-              <button on:click={() => addToCart(producto)}>Agregar al carrito</button>
+              <button on:click={() => addToCart(producto)}
+                >Agregar al carrito</button
+              >
             </div>
           {/each}
         {/if}
       {/if}
     </div>
-
   </div>
 </div>
 
 <style>
   :root {
-    --primary-color: #EBB2BD;
-    --secondary-color: #EDE9E4;
+    --primary-color: #ebb2bd;
+    --secondary-color: #ede9e4;
     --text-color: #333;
     --hover-color: #f29dae;
     --background-light: #f9f9f9;
-    --title-color_1: #B17D62;
-    --title-color_2: #A0BEA5;
+    --title-color_1: #b17d62;
+    --title-color_2: #a0bea5;
   }
   .container_productos_layout {
     display: flex;
@@ -204,10 +221,13 @@
     cursor: pointer;
     font-weight: bold;
     color: var(--title-color_1);
-    transition: background-color 0.3s, transform 0.2s;
+    transition:
+      background-color 0.3s,
+      transform 0.2s;
   }
 
-  .categorias button.selected, .categorias button:hover {
+  .categorias button.selected,
+  .categorias button:hover {
     background-color: #ff85a2;
     color: white;
     transform: scale(1.05);
@@ -220,37 +240,38 @@
     overflow: hidden;
   }
 
-  .emprendedores, .productos {
+  .emprendedores,
+  .productos {
     flex: 1;
     overflow-y: auto;
     background-color: #fff;
     border-radius: 12px;
     padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-.emprendedores_grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.emprendedor_card {
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  border: 2.5px solid var(--title-color_2);
-  transition: background-color 0.3s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  color: var(--title-color_1);
-  &:hover {
-    background-color: #f8bbd0;
-    border: none;
-    color: white;
+  .emprendedores_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
-}
 
-.emprendedor_card button {
+  .emprendedor_card {
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    border: 2.5px solid var(--title-color_2);
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    color: var(--title-color_1);
+    &:hover {
+      background-color: #f8bbd0;
+      border: none;
+      color: white;
+    }
+  }
+
+  .emprendedor_card button {
     background-color: #ff85a2;
     border: none;
     padding: 0.5rem;
@@ -263,13 +284,13 @@
       background-color: #f06292;
     }
   }
-.emprendedor_img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
-}
+  .emprendedor_img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+  }
 
   .producto_card {
     padding: 1rem;
@@ -279,7 +300,7 @@
     margin-bottom: 1rem;
     text-align: center;
     transition: background-color 0.3s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     color: var(--title-color_1);
     &:hover {
       background-color: #f8bbd0;
@@ -329,7 +350,7 @@
     margin-bottom: 1rem;
     text-align: center;
     transition: background-color 0.3s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     color: var(--title-color_1);
 
     word-wrap: break-word;

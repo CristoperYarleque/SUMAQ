@@ -34,7 +34,6 @@
     const sixMonthsLater = new Date();
     sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
 
-    // Formato YYYY-MM-DD
     startDate = sixMonthsAgo.toISOString().slice(0, 10);
     endDate = sixMonthsLater.toISOString().slice(0, 10);
 
@@ -53,7 +52,11 @@
           <img src={promocion.Url} alt={promocion.Description} />
           <div class="banner_texto">
             <h2>{promocion.Description}</h2>
-            <p>Desde {new Date(promocion.StartDate).toLocaleDateString()} hasta {new Date(promocion.EndDate).toLocaleDateString()}</p>
+            <p>
+              Desde {new Date(promocion.StartDate).toLocaleDateString()} hasta {new Date(
+                promocion.EndDate
+              ).toLocaleDateString()}
+            </p>
           </div>
         </div>
       {/each}
@@ -63,8 +66,8 @@
 
 <style>
   :root {
-    --title-color_1: #B17D62;
-    --title-color_2: #A0BEA5;
+    --title-color_1: #b17d62;
+    --title-color_2: #a0bea5;
   }
   .container_promociones {
     padding: 0 2rem;
@@ -92,7 +95,9 @@
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
   }
 
   .banner:hover {

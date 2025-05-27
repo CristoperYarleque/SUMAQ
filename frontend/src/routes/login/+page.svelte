@@ -11,7 +11,11 @@
     try {
       const { data } = await loginUser({ email, password, role });
       login(data);
-      goto(data.Role === "entrepreneur" || data.Role === "admin" ? "/emprendedor" : "/cliente");
+      goto(
+        data.Role === "entrepreneur" || data.Role === "admin"
+          ? "/emprendedor"
+          : "/cliente"
+      );
     } catch (err) {
       email = "";
       password = "";
@@ -43,7 +47,7 @@
         required
         class="inputlogin"
       />
-      <input 
+      <input
         bind:value={password}
         type="password"
         placeholder="Contraseña"
@@ -52,13 +56,17 @@
       />
 
       <div class="role-toggle">
-        <label class:active={role === 'entrepreneur'}>
-          <input   type="radio" bind:group={role} value="entrepreneur" />
-          <span class="iconsseleccionlogin"> <img src="/emprende.png" alt="Emprende" class="emprende" /> Emprendedor</span>
+        <label class:active={role === "entrepreneur"}>
+          <input type="radio" bind:group={role} value="entrepreneur" />
+          <span class="iconsseleccionlogin">
+            <img src="/emprende.png" alt="Emprende" class="emprende" /> Emprendedor</span
+          >
         </label>
-        <label class:active={role === 'client'}>
-          <input  type="radio" bind:group={role} value="client" />
-          <span class="iconsseleccionlogin"> <img src="/cliente.png" alt="Cliente" class="cliente" /> Cliente</span>
+        <label class:active={role === "client"}>
+          <input type="radio" bind:group={role} value="client" />
+          <span class="iconsseleccionlogin">
+            <img src="/cliente.png" alt="Cliente" class="cliente" /> Cliente</span
+          >
         </label>
       </div>
 
@@ -66,25 +74,27 @@
     </form>
 
     <p class="register-text">
-      ¿No tienes cuenta? <span class="register-text-span" on:click={handleRegister}>Regístrate aquí</span>
+      ¿No tienes cuenta? <span
+        class="register-text-span"
+        on:click={handleRegister}>Regístrate aquí</span
+      >
     </p>
   </div>
 </div>
 
 <style>
   :root {
-    --primary-color: #EBB2BD;
-    --secondary-color: #EDE9E4;
-    --login-color: #A0BEA5;
-    --title-color_1: #B17D62;
+    --primary-color: #ebb2bd;
+    --secondary-color: #ede9e4;
+    --login-color: #a0bea5;
+    --title-color_1: #b17d62;
   }
   .container {
     display: flex;
     height: 100vh;
-    font-family: 'Georgia', serif;
+    font-family: "Georgia", serif;
   }
 
-  
   .illustration {
     flex: 1;
     background-color: var(--primary-color);
@@ -99,17 +109,15 @@
   }
 
   .llama-logo {
-  width: 400px;
-  height: 400px;
-  margin:auto;
-}
+    width: 400px;
+    height: 400px;
+    margin: auto;
+  }
 
-  .iconsseleccionlogin{
+  .iconsseleccionlogin {
     display: flex;
     align-items: center;
   }
-
-
 
   .login-form {
     flex: 1;
@@ -118,7 +126,6 @@
     justify-content: center;
     padding: 3rem;
     background-color: var(--secondary-color);
-    
   }
 
   .login-form h1 {
@@ -126,8 +133,6 @@
     margin-bottom: 1.5rem;
     color: var(--title-color_1);
   }
-
- 
 
   .inputlogin {
     width: 100%;
@@ -154,7 +159,9 @@
     cursor: pointer;
     font-weight: bold;
     color: #555;
-    transition: background 0.3s, color 0.3s;
+    transition:
+      background 0.3s,
+      color 0.3s;
   }
 
   .role-toggle label.active {
@@ -200,4 +207,3 @@
     height: 40px;
   }
 </style>
-

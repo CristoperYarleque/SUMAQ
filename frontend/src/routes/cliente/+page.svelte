@@ -24,7 +24,6 @@
     noticias = false;
     promociones = false;
     cartComponent = false;
-    
   }
 
   function handleNoticias() {
@@ -61,6 +60,7 @@
 
   function handleLogout() {
     logout();
+    cart.set([]);
     goto("/login");
   }
 
@@ -77,7 +77,9 @@
   <div class="container_cliente_left">
     <button class="button_cliente" on:click={handleProductos}>PRODUCTOS</button>
     <button class="button_cliente" on:click={handleNoticias}>NOTICIAS</button>
-    <button class="button_cliente" on:click={handlePromociones}>PROMOCIONES</button>
+    <button class="button_cliente" on:click={handlePromociones}
+      >PROMOCIONES</button
+    >
     <button class="button_logout" on:click={handleLogout}>
       CERRAR SESIÓN <LogOut size="20" />
     </button>
@@ -86,9 +88,8 @@
     <div class="container_cliente_right_header">
       <p class="nombre_usuario">{name.toUpperCase()}</p>
       <div class="floating_cart" on:click={handleCart}>
-        <ShoppingCart /> {
-          $cart.reduce((total, item) => total + item.cantidad, 0)
-        }
+        <ShoppingCart />
+        {$cart.reduce((total, item) => total + item.cantidad, 0)}
       </div>
     </div>
     {#if productos}
@@ -109,12 +110,12 @@
 
 <style>
   :root {
-    --primary-color: #EBB2BD;
-    --secondary-color: #EDE9E4;
+    --primary-color: #ebb2bd;
+    --secondary-color: #ede9e4;
     --text-color: #333;
     --hover-color: #f29dae;
     --background-light: #f9f9f9;
-    --title-color_2: #A0BEA5;
+    --title-color_2: #a0bea5;
   }
 
   .container_cliente {
@@ -186,7 +187,7 @@
     background: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 100;
   }
 

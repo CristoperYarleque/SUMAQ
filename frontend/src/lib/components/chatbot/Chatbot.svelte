@@ -81,11 +81,15 @@
 {/if}
 
 <style>
+  :root {
+    --title-color_1: #b17d62;
+    --title-color_2: #a0bea5;
+  }
   .chat-icon {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background-color: #000;
+    background-color: var(--title-color_2);
     color: white;
     padding: 15px;
     border-radius: 50%;
@@ -128,7 +132,7 @@
   .options button {
     margin-top: 5px;
     font-size: 0.9rem;
-    background: #000;
+    background: var(--title-color_2);
     color: white;
     padding: 5px 10px;
     border: none;

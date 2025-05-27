@@ -26,7 +26,6 @@
   };
 </script>
 
-
 <div class="container">
   <div class="illustration">
     <div class="weaver">
@@ -55,7 +54,7 @@
         required
         class="inputregister"
       />
-      <input 
+      <input
         bind:value={password}
         type="password"
         placeholder="Contraseña"
@@ -64,13 +63,13 @@
       />
 
       <div class="role-toggle">
-        <label class:active={role === 'entrepreneur'}>
+        <label class:active={role === "entrepreneur"}>
           <input type="radio" bind:group={role} value="entrepreneur" />
           <span class="iconsseleccionregister">
             <img src="/emprende.png" alt="Emprende" class="emprende" /> Emprendedor
           </span>
         </label>
-        <label class:active={role === 'client'}>
+        <label class:active={role === "client"}>
           <input type="radio" bind:group={role} value="client" />
           <span class="iconsseleccionregister">
             <img src="/cliente.png" alt="Cliente" class="cliente" /> Cliente
@@ -85,15 +84,15 @@
 
 <style>
   :root {
-    --primary-color: #EBB2BD;
-    --secondary-color: #EDE9E4;
-    --login-color: #A0BEA5;
-    --title-color_1: #B17D62;
+    --primary-color: #ebb2bd;
+    --secondary-color: #ede9e4;
+    --login-color: #a0bea5;
+    --title-color_1: #b17d62;
   }
   .container {
     display: flex;
     height: 100vh;
-    font-family: 'Georgia', serif;
+    font-family: "Georgia", serif;
   }
 
   .illustration {
@@ -112,7 +111,7 @@
   .llama-logo {
     width: 300px;
     height: 300px;
-    margin: auto
+    margin: auto;
   }
 
   .iconsseleccionregister {
@@ -160,7 +159,9 @@
     cursor: pointer;
     font-weight: bold;
     color: #555;
-    transition: background 0.3s, color 0.3s;
+    transition:
+      background 0.3s,
+      color 0.3s;
   }
 
   .role-toggle label.active {
@@ -202,5 +203,3 @@
     background: none;
   }
 </style>
-
-

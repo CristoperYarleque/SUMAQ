@@ -14,12 +14,17 @@ type Entrepreneurs struct {
 	Url   string
 }
 
+type BodyEntrepreneurUpdate struct {
+	Url string
+}
+
 type FilterEntrepreneurs struct {
 	CategoryId int
 }
 
 type EntrepreneursServiceInterface interface {
 	GetEntrepreneurs(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs) ([]*Entrepreneurs, error)
+	UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate) error
 }
 
 type entrepreneursService struct {
@@ -74,4 +79,23 @@ func (c *entrepreneursService) GetEntrepreneurs(ctx context.Context, filterEntre
 	}
 
 	return entrepreneursResponse, nil
+}
+
+func (c *entrepreneursService) UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate) error {
+	dbPtr, err := c.getConn(ctx)
+	if err != nil {
+		return err
+	}
+	db := *dbPtr
+
+	bodyEntrepreneurUpdateModel := models.BodyEntrepreneurUpdate{
+		Url: bodyEntrepreneurUpdate.Url,
+	}
+
+	err = c.entrepreneursModel.UpdateUrlEntrepreneur(ctx, entrepreneurId, bodyEntrepreneurUpdateModel, db)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

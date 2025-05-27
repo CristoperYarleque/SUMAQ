@@ -57,10 +57,18 @@
 
 <div class="container_emprendedor">
   <div class="container_emprendedor_left">
-    <button class="button_emprendedor" on:click={handleEmprendedor}>{name.toUpperCase()}</button>
-    <button class="button_emprendedor" on:click={handleProductos}>INVENTARIO</button>
-    <button class="button_emprendedor" on:click={handleCapacitaciones}>CAPACITACIONES</button>
-    <button class="button_emprendedor" on:click={handleBienestarEmocional}>BIENESTAR EMOCIONAL</button>
+    <button class="button_emprendedor" on:click={handleEmprendedor}
+      >{name.toUpperCase()}</button
+    >
+    <button class="button_emprendedor" on:click={handleProductos}
+      >INVENTARIO</button
+    >
+    <button class="button_emprendedor" on:click={handleCapacitaciones}
+      >CAPACITACIONES</button
+    >
+    <button class="button_emprendedor" on:click={handleBienestarEmocional}
+      >BIENESTAR EMOCIONAL</button
+    >
     <button class="button_logout" on:click={handleLogout}>
       CERRAR SESIÓN <LogOut size="20" />
     </button>
@@ -79,73 +87,68 @@
   </div>
 </div>
 
-
-
-
 <style>
-:root {
-  --primary-color: #EBB2BD;
-  --secondary-color: #EDE9E4;
-  --text-color: #333;
-  --hover-color: #f29dae;
-  --background-light: #f9f9f9;
-}
+  :root {
+    --primary-color: #ebb2bd;
+    --secondary-color: #ede9e4;
+    --text-color: #333;
+    --hover-color: #f29dae;
+    --background-light: #f9f9f9;
+  }
 
-.container_emprendedor {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  height: 100vh;
-  background-color: var(--background-light);
-}
+  .container_emprendedor {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    height: 100vh;
+    background-color: var(--background-light);
+  }
 
-.container_emprendedor_left {
-  background-color: var(--primary-color);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  color: white;
-}
+  .container_emprendedor_left {
+    background-color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+  }
 
+  .button_emprendedor {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: none;
+    border: 2px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 
-.button_emprendedor {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: white;
-  background: none;
-  border: 2px solid white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+  .button_emprendedor:hover {
+    background-color: white;
+    color: var(--primary-color);
+  }
 
-.button_emprendedor:hover {
-  background-color: white;
-  color: var(--primary-color);
-}
+  .button_logout {
+    background-color: white;
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-.button_logout {
-  background-color: white;
-  color: var(--primary-color);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  .button_logout:hover {
+    background-color: var(--hover-color);
+    color: white;
+  }
 
-.button_logout:hover {
-  background-color: var(--hover-color);
-  color: white;
-}
-
-.container_emprendedor_right {
-  background-color: var(--secondary-color);
-  overflow-y: auto;
-  position: relative;
-}
-  
+  .container_emprendedor_right {
+    background-color: var(--secondary-color);
+    overflow-y: auto;
+    position: relative;
+  }
 </style>

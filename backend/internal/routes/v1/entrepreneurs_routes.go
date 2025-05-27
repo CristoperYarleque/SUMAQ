@@ -10,6 +10,7 @@ func (config ConnectionConfig) EntrepreneursRouter() chi.Router {
 	driver := drivers.NewEntrepreneursDriver(config.SumaqDB)
 
 	r.Get("/", driver.GetEntrepreneurs)
+	r.Put("/{id}", driver.UpdateUrlEntrepreneur)
 
 	return r
 }

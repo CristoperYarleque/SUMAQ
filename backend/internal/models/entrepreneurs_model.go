@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/cyarleque/sumaq/internal/database/interfaces"
@@ -14,12 +15,17 @@ type Entrepreneurs struct {
 	Url   string
 }
 
+type BodyEntrepreneurUpdate struct {
+	Url string
+}
+
 type FilterEntrepreneurs struct {
 	CategoryId int
 }
 
 type EntrepreneursModelInterface interface {
 	GetEntrepreneurs(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs, querier interfaces.SQLQuerier) ([]*Entrepreneurs, error)
+	UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate, querier interfaces.SQLQuerier) error
 }
 type entrepreneursModel struct {
 	Db *interfaces.SQLConnInterface
@@ -78,4 +84,38 @@ func (c *entrepreneursModel) GetEntrepreneurs(ctx context.Context, filterEntrepr
 	}
 
 	return entrepreneurs, nil
+}
+
+func (c *entrepreneursModel) UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate, querier interfaces.SQLQuerier) error {
+	queryParams := []interface{}{
+		bodyEntrepreneurUpdate.Url,
+		entrepreneurId,
+	}
+
+	query := `
+		UPDATE users 
+			SET url = ? 
+		WHERE id = ?
+	`
+
+	stmt, err := querier.PrepareContext(ctx, query)
+	if err != nil {
+		log.Println("[FATAL]", "Error prepare Query:", err.Error())
+		return err
+	}
+	defer stmt.Close()
+
+	r, err := stmt.ExecContext(ctx, queryParams...)
+	if err != nil {
+		log.Printf("[FATAL] Error executing query: %v", err)
+		return err
+	}
+	rowsAffected, err := r.RowsAffected()
+	if err != nil {
+		log.Printf("Error getting affected rows: %v", err)
+		return err
+	}
+
+	fmt.Printf("UpdateUrlEntrepreneur - Affected lines %d - RequestID %v \n", rowsAffected, ctx.Value("requestId"))
+	return nil
 }

@@ -5,7 +5,10 @@
 
   $: {
     if ($token) {
-      const home = users.role === "entrepreneur" || users.role === "admin" ? "/emprendedor" : "/cliente";
+      const home =
+        users.role === "entrepreneur" || users.role === "admin"
+          ? "/emprendedor"
+          : "/cliente";
       goto(home);
     }
   }

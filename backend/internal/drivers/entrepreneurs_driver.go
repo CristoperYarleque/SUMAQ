@@ -2,6 +2,7 @@ package drivers
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -9,10 +10,12 @@ import (
 	"github.com/cyarleque/sumaq/internal/database"
 	"github.com/cyarleque/sumaq/internal/database/interfaces"
 	"github.com/cyarleque/sumaq/internal/services"
+	"github.com/go-chi/chi/v5"
 )
 
 type EntrepreneursDriverInterface interface {
 	GetEntrepreneurs(w http.ResponseWriter, r *http.Request)
+	UpdateUrlEntrepreneur(w http.ResponseWriter, r *http.Request)
 }
 type entrepreneursDriver struct {
 	EntrepreneursService services.EntrepreneursServiceInterface
@@ -61,4 +64,35 @@ func (c *entrepreneursDriver) GetEntrepreneurs(w http.ResponseWriter, r *http.Re
 	}
 
 	c.handleSuccess(w, entrepreneurs, http.StatusOK)
+}
+
+func (c *entrepreneursDriver) UpdateUrlEntrepreneur(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	entrepreneurIdStr := chi.URLParam(r, "id")
+	if entrepreneurIdStr == "" {
+		c.handleError(w, errors.New("id is required"), http.StatusBadRequest)
+		return
+	}
+
+	entrepreneurId, err := strconv.Atoi(entrepreneurIdStr)
+	if err != nil {
+		c.handleError(w, errors.New("id must be a valid integer"), http.StatusBadRequest)
+		return
+	}
+
+	var bodyEntrepreneurUpdate services.BodyEntrepreneurUpdate
+	if err := json.NewDecoder(r.Body).Decode(&bodyEntrepreneurUpdate); err != nil {
+		c.handleError(w, errors.New("invalid JSON body"), http.StatusBadRequest)
+		return
+	}
+
+	err = c.EntrepreneursService.UpdateUrlEntrepreneur(ctx, entrepreneurId, bodyEntrepreneurUpdate)
+	if err != nil {
+		c.handleError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	c.handleSuccess(w, nil, http.StatusOK)
+
 }

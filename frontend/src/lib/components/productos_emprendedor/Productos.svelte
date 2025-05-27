@@ -1,5 +1,6 @@
 <script>
-  import { onMount} from "svelte";
+  import { onMount } from "svelte";
+  import { Image, X } from "lucide-svelte";
   import { getProducts, getCategories, createProduct } from "$lib/api";
   import { token, users } from "$lib/stores/auth";
   import Tarjetas from "$lib/components/tarjetas/Tarjetas.svelte";
@@ -19,7 +20,6 @@
     price = "";
 
   let cargando = false;
-  
 
   async function handleCategorias(token) {
     try {
@@ -56,6 +56,15 @@
         previewUrl = reader.result;
       };
       reader.readAsDataURL(file);
+    }
+  }
+
+  function clearPreview() {
+    previewUrl = "";
+    file = "";
+    const fileInput = document.getElementById("fileInput");
+    if (fileInput) {
+      fileInput.value = "";
     }
   }
 
@@ -108,61 +117,111 @@
 <div class="container_productos_emprendedor">
   <div class="container_productos_forms">
     <form on:submit|preventDefault={handleSubmit}>
-      <input class="input_productos"
+      <input
+        class="input_productos"
         type="text"
         bind:value={name}
         name="name"
         placeholder="Nombre"
         required
       />
-      <input class="input_productos"
+      <input
+        class="input_productos"
         type="text"
         bind:value={description}
         name="description"
         placeholder="Descripción"
       />
-      <input class="input_productos"
+      <input
+        class="input_productos"
         type="number"
         step="0.01"
         bind:value={price}
         placeholder="Precio"
         required
       />
-      <select class="select_productos" name="categoryId" id="categoryId" bind:value={categoryId} required>
+      <select
+        class="select_productos"
+        name="categoryId"
+        id="categoryId"
+        bind:value={categoryId}
+        required
+      >
         {#each categorias as categoria}
           <option value={categoria.CategoryId}>{categoria.Name}</option>
         {/each}
       </select>
 
-      <input class="input_productos_img"
+      <input
+        id="fileInput"
+        class="input_hidden"
         type="file"
         name="url"
         on:change={handleFileChange}
         accept="image/*"
       />
-     
+
+      <label for="fileInput" class="custom_file_button">
+        <Image /> Subir Imagen
+      </label>
+
       <button class="agregar_productos" type="submit">Agregar</button>
     </form>
     {#if previewUrl}
-      <img class="preview-image" src={previewUrl} alt="Vista previa" />
+      <div class="preview-container">
+        <img class="preview-image" src={previewUrl} alt="Vista previa" />
+        <span type="button" class="delete_preview" on:click={clearPreview}>
+          <X />
+        </span>
+      </div>
     {/if}
   </div>
   <div class="container_productos">
     <h1 class="title_productos">PRODUCTOS</h1>
     <div class="container_productos_emprendedor_right">
-    {#if cargando}
-      <Cargando />
-    {:else}
-      {#each products as product}
-        <Tarjetas {product} on:delete={handleDelete} />
-      {/each}
-    {/if}
+      {#if cargando}
+        <Cargando />
+      {:else}
+        {#each products as product}
+          <Tarjetas {product} on:delete={handleDelete} />
+        {/each}
+      {/if}
     </div>
   </div>
 </div>
 
-
 <style>
+  :root {
+    --primary-color: #ebb2bd;
+    --secondary-color: #ede9e4;
+    --text-color: #333;
+    --hover-color: #f29dae;
+    --background-light: #f9f9f9;
+    --title-color_1: #b17d62;
+    --title-color_2: #a0bea5;
+  }
+  .input_hidden {
+    display: none;
+  }
+  .custom_file_button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--background-light);
+    color: rgba(0, 0, 0, 0.589);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+    margin: 0 0.75rem;
+    width: 200px;
+  }
+
+  .custom_file_button:hover {
+    background-color: #ebb2bd;
+  }
   .container_productos_emprendedor {
     height: 100vh;
     overflow: hidden;
@@ -170,17 +229,19 @@
     flex-direction: column;
   }
   .title_productos {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #b17d62;
     text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    color: var(--title-color_1);
+    font-size: 1.8rem;
   }
   .container_productos {
     border: 1px solid #ccc;
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    padding: 1rem ;
+    padding: 1rem;
     background-color: white;
   }
   .container_productos_emprendedor_right {
@@ -189,91 +250,103 @@
     gap: 1rem;
     justify-content: center;
   }
-  .preview-image {
-    max-width: 200px;
-    margin-top: 10px;
-  }
 
   .container_productos_forms form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
-}
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+  }
 
-.input_productos,
-.select_productos {
-  background-color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  color: black;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
-}
+  .input_productos,
+  .select_productos {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: black;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+  }
 
-.input_productos:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #c08060; /* terracota o similar */
-}
+  .input_productos:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #c08060;
+  }
 
-.container_productos_forms button {
-  background-color: #c08060; /* terracota */
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 0.5rem 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  .container_productos_forms button {
+    background-color: #c08060;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
 
-.container_productos_forms button:hover {
-  background-color: #a8664d;
-}
+  .container_productos_forms button:hover {
+    background-color: #a8664d;
+  }
 
-.input_productos_img,
-.select_productos {
-  background-color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  color: black;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin: 0 0.75rem;
-  width: 220px;
-}
-.preview-image{
-  padding: 0.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin: auto;
-  width: 220px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .select_productos {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: black;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 0.75rem;
+    width: 220px;
+  }
+  .preview-image {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.agregar_productos {
-  background-color: #c08060;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.3s ease;
-}
+  .preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 200px;
+    position: relative;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
 
-.agregar_productos:hover {
-  background-color: #a8664d;
-}
+  .delete_preview {
+    position: absolute;
+    right: 0;
+    border: none;
+    border-radius: 8px;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    color: var(--text-color);
+  }
 
+  .agregar_productos {
+    background-color: #c08060;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+  }
 
+  .agregar_productos:hover {
+    background-color: #a8664d;
+  }
 </style>

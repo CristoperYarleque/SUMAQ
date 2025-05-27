@@ -2,7 +2,7 @@
 import { logout } from "$lib/stores/auth";
 import { goto } from "$app/navigation";
 
-const API_BASE = "http://localhost:3005/v1"; // ajusta si cambia el backend
+const API_BASE = "http://localhost:3005/v1";
 
 async function authFetch(url, options = {}) {
   const res = await fetch(url, options);
@@ -84,10 +84,13 @@ export async function deleteProduct(token, productId) {
 }
 
 export async function getCapacitaciones(token, entrepreneurId, type) {
-  const res = await authFetch(`${API_BASE}/info-entrepreneurs?entrepreneurId=${entrepreneurId}&type=${type}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    "Content-Type": "application/json",
-  });
+  const res = await authFetch(
+    `${API_BASE}/info-entrepreneurs?entrepreneurId=${entrepreneurId}&type=${type}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      "Content-Type": "application/json",
+    }
+  );
   if (!res.ok) throw new Error("Error al obtener capacitaciones");
   return res.json();
 }
@@ -95,7 +98,10 @@ export async function getCapacitaciones(token, entrepreneurId, type) {
 export async function createCapacitacion(token, data) {
   const res = await authFetch(`${API_BASE}/info-entrepreneurs`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear capacitación");
@@ -103,10 +109,13 @@ export async function createCapacitacion(token, data) {
 }
 
 export async function getBienestar(token, entrepreneurId, type) {
-  const res = await authFetch(`${API_BASE}/info-entrepreneurs?entrepreneurId=${entrepreneurId}&type=${type}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    "Content-Type": "application/json",
-  });
+  const res = await authFetch(
+    `${API_BASE}/info-entrepreneurs?entrepreneurId=${entrepreneurId}&type=${type}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      "Content-Type": "application/json",
+    }
+  );
   if (!res.ok) throw new Error("Error al obtener bienestar");
   return res.json();
 }
@@ -114,7 +123,10 @@ export async function getBienestar(token, entrepreneurId, type) {
 export async function createBienestar(token, data) {
   const res = await authFetch(`${API_BASE}/info-entrepreneurs`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear bienestar");
@@ -122,10 +134,13 @@ export async function createBienestar(token, data) {
 }
 
 export async function getEmprendedores(token, entrepreneurId, type) {
-  const res = await authFetch(`${API_BASE}/info-entrepreneurs?entrepreneurId=${entrepreneurId}&type=${type}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    "Content-Type": "application/json",
-  });
+  const res = await authFetch(
+    `${API_BASE}/info-entrepreneurs?entrepreneurId=${entrepreneurId}&type=${type}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      "Content-Type": "application/json",
+    }
+  );
   if (!res.ok) throw new Error("Error al obtener emprendedores");
   return res.json();
 }
@@ -133,7 +148,10 @@ export async function getEmprendedores(token, entrepreneurId, type) {
 export async function createEmprendedor(token, data) {
   const res = await authFetch(`${API_BASE}/info-entrepreneurs`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear emprendedor");
@@ -141,29 +159,37 @@ export async function createEmprendedor(token, data) {
 }
 
 export async function getPromociones(token, startDate, endDate) {
-  const res = await authFetch(`${API_BASE}/promotions?startDate=${startDate}&endDate=${endDate}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    "Content-Type": "application/json",
-  });
+  const res = await authFetch(
+    `${API_BASE}/promotions?startDate=${startDate}&endDate=${endDate}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      "Content-Type": "application/json",
+    }
+  );
   if (!res.ok) throw new Error("Error al obtener promociones");
   return res.json();
 }
 
 export async function getNoticias(token, startDate, endDate) {
-  const res = await authFetch(`${API_BASE}/news?startDate=${startDate}&endDate=${endDate}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    "Content-Type": "application/json",
-  });
+  const res = await authFetch(
+    `${API_BASE}/news?startDate=${startDate}&endDate=${endDate}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      "Content-Type": "application/json",
+    }
+  );
   if (!res.ok) throw new Error("Error al obtener noticias");
   return res.json();
 }
 
-
 export async function getEmprendedorByCategory(token, categoryId) {
-  const res = await authFetch(`${API_BASE}/entrepreneurs?categoryId=${categoryId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-    "Content-Type": "application/json",
-  });
+  const res = await authFetch(
+    `${API_BASE}/entrepreneurs?categoryId=${categoryId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      "Content-Type": "application/json",
+    }
+  );
   if (!res.ok) throw new Error("Error al obtener emprendedor por categoría");
   return res.json();
 }
