@@ -29,7 +29,7 @@
 <div class="container">
   <div class="illustration">
     <div class="weaver">
-      <img src="/logo2.png" alt="Mujer tejiendo" />
+      <img src="/logo_hero.png" alt="Mujer tejiendo" />
     </div>
   </div>
 
@@ -37,7 +37,7 @@
     <button class="button_logout" on:click={handleLogin}
       ><LogOut class="w-1 h-1 " /></button
     >
-    <img src="/logo.png" alt="Logo Llama" class="llama-logo" />
+    <img src="/logo_inicio.png" alt="Logo Llama" class="llama-logo" />
     <h1 class="Bienvenida">Registro</h1>
     <form on:submit|preventDefault={handleRegister}>
       <input
@@ -66,7 +66,7 @@
         <label class:active={role === "entrepreneur"}>
           <input type="radio" bind:group={role} value="entrepreneur" />
           <span class="iconsseleccionregister">
-            <img src="/emprende.png" alt="Emprende" class="emprende" /> Emprendedor
+            <img src="/emprendedor.png" alt="Emprende" class="emprende" /> Emprendedor
           </span>
         </label>
         <label class:active={role === "client"}>

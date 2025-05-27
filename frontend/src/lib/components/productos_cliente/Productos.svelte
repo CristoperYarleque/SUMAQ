@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { BadgeCheck } from "lucide-svelte";
   import { token } from "$lib/stores/auth";
   import {
     getCategories,
@@ -118,13 +119,22 @@
         <div class="emprendedores_grid">
           {#each emprendedoresPorCategoria as emprendedor}
             <div class="emprendedor_card">
+              {#if emprendedor.Role === "admin"}
+                <span class="emprendedor_admin_badge">
+                  <BadgeCheck />
+                </span>
+              {/if}
               <img
                 src={emprendedor.Url}
                 alt={emprendedor.Name}
                 class="emprendedor_img"
               />
-              <h3>{emprendedor.Name}</h3>
-              <p>{emprendedor.Email}</p>
+              {#if emprendedor.Role === "admin"}
+                <h3>{emprendedor.Name}</h3>
+              {:else}
+                <h3>{emprendedor.Name}</h3>
+                <p>{emprendedor.Email}</p>
+              {/if}
               <div>
                 <button
                   on:click={() =>
@@ -166,6 +176,9 @@
         {:else}
           {#each productos as producto}
             <div class="producto_card" class:hidden={!showProducts}>
+              {#if producto.Role === "admin"}
+                <span class="pack_badge">Pack/Promoción</span>
+              {/if}
               <img src={producto.Url} alt={producto.Name} />
               <h4>{producto.Name}</h4>
               <p>{producto.Description}</p>
@@ -190,6 +203,22 @@
     --background-light: #f9f9f9;
     --title-color_1: #b17d62;
     --title-color_2: #a0bea5;
+  }
+  .pack_badge {
+    color: var(--title-color_2);
+    font-size: 0.9rem;
+    font-weight: bold;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+  }
+  .emprendedor_admin_badge {
+    color: var(--title-color_2);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
   }
   .container_productos_layout {
     display: flex;
@@ -264,10 +293,14 @@
     transition: background-color 0.3s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     color: var(--title-color_1);
+    position: relative;
     &:hover {
       background-color: #f8bbd0;
       border: none;
       color: white;
+      .emprendedor_admin_badge {
+        color: white;
+      }
     }
   }
 
@@ -302,10 +335,14 @@
     transition: background-color 0.3s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     color: var(--title-color_1);
+    position: relative;
     &:hover {
       background-color: #f8bbd0;
       border: none;
       color: white;
+      .pack_badge {
+        color: white;
+      }
     }
   }
 

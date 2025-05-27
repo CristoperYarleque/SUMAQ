@@ -13,6 +13,7 @@ type Entrepreneurs struct {
 	Name  string
 	Email string
 	Url   string
+	Role  string
 }
 
 type BodyEntrepreneurUpdate struct {
@@ -45,11 +46,12 @@ func (c *entrepreneursModel) GetEntrepreneurs(ctx context.Context, filterEntrepr
 		u.id, 
 		u.name, 
 		u.email,
-		u.url
+		u.url,
+		u.role
 		FROM users u
 		INNER JOIN products p ON p.entrepreneur_id = u.id
 		WHERE p.category_id = ?
-		AND u.role = "entrepreneur"
+		AND u.role IN ("entrepreneur", "admin")
 		GROUP BY u.id
 	`
 
@@ -75,6 +77,7 @@ func (c *entrepreneursModel) GetEntrepreneurs(ctx context.Context, filterEntrepr
 			&entrepreneur.Name,
 			&entrepreneur.Email,
 			&entrepreneur.Url,
+			&entrepreneur.Role,
 		)
 		if err != nil {
 			log.Println("Error Scan:", err.Error())

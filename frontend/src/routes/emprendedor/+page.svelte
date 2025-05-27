@@ -13,6 +13,7 @@
   let capacitaciones = false;
   let bienestarEmocional = false;
   let emprendedor = false;
+  let logo = true;
   let name = "";
 
   function handleProductos() {
@@ -20,6 +21,7 @@
     capacitaciones = false;
     bienestarEmocional = false;
     emprendedor = false;
+    logo = false;
   }
 
   function handleCapacitaciones() {
@@ -27,6 +29,7 @@
     capacitaciones = true;
     bienestarEmocional = false;
     emprendedor = false;
+    logo = false;
   }
 
   function handleBienestarEmocional() {
@@ -34,6 +37,7 @@
     capacitaciones = false;
     bienestarEmocional = true;
     emprendedor = false;
+    logo = false;
   }
 
   function handleEmprendedor() {
@@ -41,6 +45,7 @@
     capacitaciones = false;
     bienestarEmocional = false;
     emprendedor = true;
+    logo = false;
   }
 
   function handleLogout() {
@@ -79,6 +84,10 @@
       <Emprendedor />
     {:else if productos}
       <Productos />
+    {:else if logo}
+      <div class="container_logo">
+        <img src="/logo_hero.png" alt="logo" class="logo_hero" />
+      </div>
     {:else if capacitaciones}
       <Capacitacion />
     {:else if bienestarEmocional}
@@ -150,5 +159,12 @@
     background-color: var(--secondary-color);
     overflow-y: auto;
     position: relative;
+  }
+
+  .container_logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 </style>

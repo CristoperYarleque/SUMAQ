@@ -33,6 +33,7 @@ type Products struct {
 	Description  string
 	CategoryId   int
 	CategoryName string
+	Role         string
 }
 
 type FilterProducts struct {
@@ -111,9 +112,11 @@ func (c *productsModel) GetProducts(ctx context.Context, filterProducts FilterPr
 		p.url,
 		p.description,
 		p.category_id,
-		c.name
+		c.name,
+		u.role
 		FROM products p
 		INNER JOIN categories c ON c.id = p.category_id
+		INNER JOIN users u ON u.id = p.entrepreneur_id
 		WHERE entrepreneur_id = ?
 		` + sqlParams + `
 		ORDER BY 1 DESC;
@@ -144,6 +147,7 @@ func (c *productsModel) GetProducts(ctx context.Context, filterProducts FilterPr
 			&product.Description,
 			&product.CategoryId,
 			&product.CategoryName,
+			&product.Role,
 		)
 		if err != nil {
 			log.Println("Error Scan:", err.Error())

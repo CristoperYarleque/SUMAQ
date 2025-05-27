@@ -32,12 +32,12 @@
 <div class="container">
   <div class="illustration">
     <div class="weaver">
-      <img src="/logo1.png" alt="Mujer tejiendo" />
+      <img src="/logo_hero.png" alt="Mujer tejiendo" />
     </div>
   </div>
 
   <div class="login-form">
-    <img src="/logo.png" alt="Logo Llama" class="llama-logo" />
+    <img src="/logo_inicio.png" alt="Logo Llama" class="llama-logo" />
     <h1 class="Bienvenida">Bienvenidos</h1>
     <form on:submit|preventDefault={handleLogin}>
       <input
@@ -59,7 +59,7 @@
         <label class:active={role === "entrepreneur"}>
           <input type="radio" bind:group={role} value="entrepreneur" />
           <span class="iconsseleccionlogin">
-            <img src="/emprende.png" alt="Emprende" class="emprende" /> Emprendedor</span
+            <img src="/emprendedor.png" alt="Emprende" class="emprende" /> Emprendedor</span
           >
         </label>
         <label class:active={role === "client"}>

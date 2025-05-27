@@ -12,6 +12,7 @@ type Entrepreneurs struct {
 	Name  string
 	Email string
 	Url   string
+	Role  string
 }
 
 type BodyEntrepreneurUpdate struct {
@@ -75,6 +76,7 @@ func (c *entrepreneursService) GetEntrepreneurs(ctx context.Context, filterEntre
 			Name:  entrepreneur.Name,
 			Email: entrepreneur.Email,
 			Url:   entrepreneur.Url,
+			Role:  entrepreneur.Role,
 		}
 	}
 

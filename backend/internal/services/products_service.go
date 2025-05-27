@@ -33,6 +33,7 @@ type Products struct {
 	Description  string
 	CategoryId   int
 	CategoryName string
+	Role         string
 }
 
 type FilterProducts struct {
@@ -125,6 +126,7 @@ func (c *productsService) GetProducts(ctx context.Context, filterProducts Filter
 			Description:  product.Description,
 			CategoryId:   product.CategoryId,
 			CategoryName: product.CategoryName,
+			Role:         product.Role,
 		}
 	}
 
