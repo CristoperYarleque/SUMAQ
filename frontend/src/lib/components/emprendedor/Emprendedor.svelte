@@ -2,7 +2,12 @@
   import { onMount } from "svelte";
   import { Image, X } from "lucide-svelte";
   import { token, users } from "$lib/stores/auth";
-  import { getEmprendedores, createEmprendedor } from "$lib/api";
+  import {
+    getEmprendedores,
+    createEmprendedor,
+    updateUrlEmprendedor,
+    uploadImageToImgBB,
+  } from "$lib/api";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
   import { getEmbedUrl } from "$lib/helpers/utils";
 
@@ -15,7 +20,10 @@
   let file = "";
 
   let url = "",
-    description = "";
+    description = "",
+    imageUrl = "";
+
+  let fileLabelText = "Subir Fotografía";
 
   async function handleEmprendedores(tokenId, entrepreneurId, type) {
     try {
@@ -37,12 +45,17 @@
         previewUrl = reader.result;
       };
       reader.readAsDataURL(file);
+      fileLabelText = file.name;
+    } else {
+      fileLabelText = "Subir Fotografía";
     }
   }
 
   function clearPreview() {
     previewUrl = "";
     file = "";
+    imageUrl = "";
+    fileLabelText = "Subir Fotografía";
     const fileInput = document.getElementById("fileInput");
     if (fileInput) {
       fileInput.value = "";
@@ -51,6 +64,16 @@
 
   async function handleSubmit() {
     try {
+      if (file) {
+        const { data, status } = await uploadImageToImgBB(file);
+        if (status === 200) {
+          imageUrl = data.url;
+        } else {
+          alert("Error al subir la imagen");
+          return;
+        }
+      }
+
       const { code } = await createEmprendedor(tokenId, {
         url,
         description,
@@ -60,7 +83,13 @@
       if (code === 201) {
         url = "";
         description = "";
-        await handleEmprendedores(tokenId, entrepreneurId, type);
+        const { code } = await updateUrlEmprendedor(tokenId, entrepreneurId, {
+          url: imageUrl,
+        });
+        if (code === 200) {
+          await handleEmprendedores(tokenId, entrepreneurId, type);
+          clearPreview();
+        }
       }
     } catch (error) {
       console.error(error);
@@ -111,7 +140,8 @@
       />
 
       <label for="fileInput" class="custom_file_button">
-        <Image /> Subir Fotografia
+        <Image />
+        {fileLabelText}
       </label>
 
       <button class="button_emprendedor" type="submit">Guardar</button>
@@ -234,7 +264,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    /* max-width: 500px; */
     margin: 2rem;
   }
 

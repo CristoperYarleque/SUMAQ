@@ -24,6 +24,8 @@
     noticias = false;
     promociones = false;
     cartComponent = false;
+    resumenComponent = false;
+    exito = false;
   }
 
   function handleNoticias() {
@@ -31,6 +33,8 @@
     noticias = true;
     promociones = false;
     cartComponent = false;
+    resumenComponent = false;
+    exito = false;
   }
 
   function handlePromociones() {
@@ -38,6 +42,8 @@
     noticias = false;
     promociones = true;
     cartComponent = false;
+    resumenComponent = false;
+    exito = false;
   }
 
   function handleCart() {
@@ -46,16 +52,25 @@
     productos = false;
     noticias = false;
     promociones = false;
+    exito = false;
   }
 
   function handleConfirmar() {
     cartComponent = false;
     resumenComponent = true;
+    exito = false;
+    productos = false;
+    noticias = false;
+    promociones = false;
   }
 
   function handleExito() {
     resumenComponent = false;
     exito = true;
+    productos = false;
+    noticias = false;
+    promociones = false;
+    cartComponent = false;
   }
 
   function handleLogout() {

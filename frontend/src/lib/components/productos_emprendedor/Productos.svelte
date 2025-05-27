@@ -1,7 +1,12 @@
 <script>
   import { onMount } from "svelte";
   import { Image, X } from "lucide-svelte";
-  import { getProducts, getCategories, createProduct } from "$lib/api";
+  import {
+    getProducts,
+    getCategories,
+    createProduct,
+    uploadImageToImgBB,
+  } from "$lib/api";
   import { token, users } from "$lib/stores/auth";
   import Tarjetas from "$lib/components/tarjetas/Tarjetas.svelte";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
@@ -17,9 +22,12 @@
   let file = "",
     name = "",
     description = "",
-    price = "";
+    price = "",
+    url = "";
 
   let cargando = false;
+
+  let fileLabelText = "Subir Imagen";
 
   async function handleCategorias(token) {
     try {
@@ -56,12 +64,17 @@
         previewUrl = reader.result;
       };
       reader.readAsDataURL(file);
+      fileLabelText = file.name;
+    } else {
+      fileLabelText = "Subir Imagen";
     }
   }
 
   function clearPreview() {
     previewUrl = "";
     file = "";
+    url = "";
+    fileLabelText = "Subir Imagen";
     const fileInput = document.getElementById("fileInput");
     if (fileInput) {
       fileInput.value = "";
@@ -70,24 +83,34 @@
 
   async function handleSubmit() {
     try {
+      if (file) {
+        const { data, status } = await uploadImageToImgBB(file);
+        if (status === 200) {
+          url = data.url;
+        } else {
+          alert("Error al subir la imagen");
+          return;
+        }
+      }
+
       const { code } = await createProduct(tokenId, {
         name,
         description,
         price,
         categoryId,
         entrepreneurId,
+        url,
       });
 
       if (code === 201) {
         name = "";
         description = "";
         price = "";
-        file = "";
-        previewUrl = "";
         if (categorias.length > 0) {
           categoryId = categorias[0].CategoryId;
         }
       }
+      clearPreview();
       await handleProducts(tokenId);
     } catch (error) {
       console.log("error", error);
@@ -162,7 +185,8 @@
       />
 
       <label for="fileInput" class="custom_file_button">
-        <Image /> Subir Imagen
+        <Image />
+        {fileLabelText}
       </label>
 
       <button class="agregar_productos" type="submit">Agregar</button>

@@ -2,7 +2,9 @@
 import { logout } from "$lib/stores/auth";
 import { goto } from "$app/navigation";
 
-const API_BASE = "http://localhost:3005/v1";
+const API_BASE = import.meta.env.VITE_BACKEND_SUMAQ_URL;
+const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
+const IMGBB_URL = import.meta.env.VITE_IMGBB_URL;
 
 async function authFetch(url, options = {}) {
   const res = await fetch(url, options);
@@ -155,6 +157,27 @@ export async function createEmprendedor(token, data) {
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear emprendedor");
+  return res.json();
+}
+
+export async function uploadImageToImgBB(file) {
+  const formData = new FormData();
+  formData.append("image", file);
+  const res = await authFetch(`${IMGBB_URL}/upload?key=${IMGBB_API_KEY}`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) throw new Error("Error al subir imagen a ImgBB");
+  return res.json();
+}
+
+export async function updateUrlEmprendedor(token, entrepreneurId, data) {
+  const res = await authFetch(`${API_BASE}/entrepreneurs/${entrepreneurId}`, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Error al actualizar url emprendedor");
   return res.json();
 }
 
