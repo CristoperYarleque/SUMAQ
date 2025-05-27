@@ -1,7 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import { token } from "$lib/stores/auth";
-  import { getCategories, getEmprendedorByCategory, getProducts  } from "$lib/api";
+  import { getCategories, getEmprendedorByCategory, getProducts, getEmprendedores } from "$lib/api";
+  import { getEmbedUrl } from "$lib/helpers/utils";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
   import { addToCart } from "$lib/stores/cart";
  
@@ -10,10 +11,15 @@
   let categorias = [];
   let emprendedoresPorCategoria = [];
   let productos = [];
+  let emprendedorInfo = [];
   let cargandoCategorias = false;
   let cargandoEmprendedores = false;
   let cargandoProductos = false;
+  let cargandoEntrepreneurInfo = false;
+  let showInfo = false;
+  let showProducts = false;
   let selectedCategoryId = null;
+  let type = "info";
 
   async function handleCategorias() {
     try {
@@ -31,8 +37,9 @@
     try {
       cargandoEmprendedores = true;
       selectedCategoryId = categoryId;
-      const { data } = await getEmprendedorByCategory(tokenId, categoryId);
       productos = [];
+      emprendedorInfo = {};
+      const { data } = await getEmprendedorByCategory(tokenId, categoryId);
       emprendedoresPorCategoria = data;
       cargandoEmprendedores = false;
     } catch (error) {
@@ -43,12 +50,30 @@
 
   async function handleProducts(categoryId, emprendedorId) {
     try {
+      showInfo = false;
+      showProducts = true;
+      emprendedorInfo = {};
       cargandoProductos = true;
       const { data } = await getProducts(tokenId, emprendedorId, categoryId);
       productos = data;
       cargandoProductos = false;
     } catch (error) {
       cargandoProductos = false;
+      console.error(error);
+    }
+  }
+
+  async function handleEntrepreneurInfo(emprendedorId) {
+    try {
+      showInfo = true;
+      showProducts = false;
+      productos = [];
+      cargandoEntrepreneurInfo = true;
+      const { data } = await getEmprendedores(tokenId, emprendedorId, type);
+      emprendedorInfo = data;
+      cargandoEntrepreneurInfo = false;
+    } catch (error) {
+      cargandoEntrepreneurInfo = false;
       console.error(error);
     }
   }
@@ -86,32 +111,56 @@
       {:else}
         <div class="emprendedores_grid">
           {#each emprendedoresPorCategoria as emprendedor}
-            <div class="emprendedor_card" on:click={() => handleProducts(selectedCategoryId, emprendedor.Id)}>
+            <div class="emprendedor_card">
               <img src={emprendedor.Url} alt={emprendedor.Name} class="emprendedor_img" />
               <h3>{emprendedor.Name}</h3>
               <p>{emprendedor.Email}</p>
+              <div>
+                <button on:click={() => handleProducts(selectedCategoryId, emprendedor.Id)}>Productos</button>
+                <button on:click={() => handleEntrepreneurInfo(emprendedor.Id)}>Información</button>
+              </div>
             </div>
           {/each}
         </div>
       {/if}
     </div>
-    
 
     <div class="productos">
-      {#if cargandoProductos}
-        <Cargando />
-      {:else}
-        {#each productos as producto}
-          <div class="producto_card">
-            <img src={producto.Url} alt={producto.Name} />
-            <h4>{producto.Name}</h4>
-            <p>{producto.Description}</p>
-            <p class="precio">S/ {producto.Price}</p>
-            <button on:click={() => addToCart(producto)}>Agregar al carrito</button>
-          </div>
-        {/each}
+      {#if showInfo}
+        {#if cargandoEntrepreneurInfo}
+          <Cargando />
+        {:else}
+          {#each emprendedorInfo as emprendedor}
+            <div class="emprendedor_info_card">
+              <iframe
+                src={getEmbedUrl(emprendedor.Url)}
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+              <h2>Descripción</h2>
+              <p>{emprendedor.Description}</p>
+            </div>
+          {/each}
+        {/if}
+      {/if}
+
+      {#if showProducts}
+        {#if cargandoProductos}
+          <Cargando />
+        {:else}
+          {#each productos as producto}
+            <div class="producto_card" class:hidden={!showProducts}>
+              <img src={producto.Url} alt={producto.Name} />
+              <h4>{producto.Name}</h4>
+              <p>{producto.Description}</p>
+              <p class="precio">S/ {producto.Price.toFixed(2)}</p>
+              <button on:click={() => addToCart(producto)}>Agregar al carrito</button>
+            </div>
+          {/each}
+        {/if}
       {/if}
     </div>
+
   </div>
 </div>
 
@@ -154,7 +203,7 @@
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
-    color: #333;
+    color: var(--title-color_1);
     transition: background-color 0.3s, transform 0.2s;
   }
 
@@ -180,19 +229,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
-  /* .emprendedor_card {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    background-color: #fce4ec;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .emprendedor_card:hover {
-    background-color: #f8bbd0;
-  } */
-
 .emprendedores_grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -200,19 +236,33 @@
 }
 
 .emprendedor_card {
-  background-color: #fce4ec;
   border-radius: 12px;
   padding: 1rem;
   text-align: center;
-  cursor: pointer;
+  border: 2.5px solid var(--title-color_2);
   transition: background-color 0.3s;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  color: var(--title-color_1);
+  &:hover {
+    background-color: #f8bbd0;
+    border: none;
+    color: white;
+  }
 }
 
-.emprendedor_card:hover {
-  background-color: #f8bbd0;
-}
-
+.emprendedor_card button {
+    background-color: #ff85a2;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #f06292;
+    }
+  }
 .emprendedor_img {
   width: 80px;
   height: 80px;
@@ -225,10 +275,17 @@
     padding: 1rem;
     border-radius: 12px;
     background-color: #f9f9f9;
-    border: 1px solid var(--title-color_2);
+    border: 2.5px solid var(--title-color_2);
     margin-bottom: 1rem;
     text-align: center;
+    transition: background-color 0.3s;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    color: var(--title-color_1);
+    &:hover {
+      background-color: #f8bbd0;
+      border: none;
+      color: white;
+    }
   }
 
   .producto_card img {
@@ -262,5 +319,26 @@
 
   .producto_card button:hover {
     background-color: #f06292;
+  }
+
+  .emprendedor_info_card {
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    border: 2.5px solid var(--title-color_2);
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    color: var(--title-color_1);
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    &:hover {
+      background-color: #f8bbd0;
+      border: none;
+      color: white;
+    }
   }
 </style>

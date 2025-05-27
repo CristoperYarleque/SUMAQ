@@ -55,38 +55,6 @@
   });
 </script>
 
-<!-- <div class="container_emprendedor">
-  <div class="container_emprendedor_left">
-    <button class="button_emprendedor" on:click={handleEmprendedor}
-      >{name.toUpperCase()}</button
-    >
-    <button class="button_emprendedor" on:click={handleProductos}
-      >INVENTARIO</button
-    >
-    <button class="button_emprendedor" on:click={handleCapacitaciones}
-      >CAPACITACIONES</button
-    >
-    <button class="button_emprendedor" on:click={handleBienestarEmocional}
-      >BIENESTAR EMOCIONAL</button
-    >
-    <button class="button_logout" on:click={handleLogout}
-      >CERRAR SESIÓN <LogOut class="w-1 h-1 " /></button
-    >
-  </div>
-  <div class="container_emprendedor_right">
-    <Chatbot />
-    {#if emprendedor}
-      <Emprendedor />
-    {:else if productos}
-      <Productos />
-    {:else if capacitaciones}
-      <Capacitacion />
-    {:else if bienestarEmocional}
-      <Bienestar />
-    {/if}
-  </div>
-</div> -->
-
 <div class="container_emprendedor">
   <div class="container_emprendedor_left">
     <button class="button_emprendedor" on:click={handleEmprendedor}>{name.toUpperCase()}</button>

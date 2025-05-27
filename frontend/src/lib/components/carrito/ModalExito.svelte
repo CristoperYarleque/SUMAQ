@@ -17,6 +17,10 @@
   </div>
   
   <style>
+    :root {
+      --background-light: #f9f9f9;
+      --text-color: #333;
+    }
     .modal_exito {
       position: fixed;
       top: 0;
@@ -28,10 +32,11 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
+      color: var(--text-color);
     }
   
     .modal_content {
-      background: white;
+      background: var(--background-light);
       padding: 30px;
       border-radius: 12px;
       text-align: center;

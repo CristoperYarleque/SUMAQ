@@ -64,6 +64,7 @@
 <style>
   :root {
     --title-color_1: #B17D62;
+    --title-color_2: #A0BEA5;
   }
   .container_promociones {
     padding: 0 2rem;
@@ -111,7 +112,7 @@
     bottom: 1rem;
     left: 1rem;
     color: white;
-    text-shadow: 1.5px 1.5px 4px rgb(0, 0, 0);
+    text-shadow: 1.5px 1.5px 4px black;
   }
 
   .banner_texto h2 {

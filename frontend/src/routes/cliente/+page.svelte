@@ -114,6 +114,7 @@
     --text-color: #333;
     --hover-color: #f29dae;
     --background-light: #f9f9f9;
+    --title-color_2: #A0BEA5;
   }
 
   .container_cliente {
@@ -161,6 +162,7 @@
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border: 1px solid var(--title-color_2);
   }
 
   .button_logout:hover {

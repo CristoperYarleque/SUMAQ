@@ -3,6 +3,7 @@
   import { token, users } from "$lib/stores/auth";
   import { getEmprendedores, createEmprendedor } from "$lib/api";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
+  import { getEmbedUrl } from "$lib/helpers/utils";
 
   let emprendedores = [];
   let tokenId = "";
@@ -56,17 +57,6 @@
     });
     await handleEmprendedores(tokenId, entrepreneurId, type);
   });
-
-  function getEmbedUrl(url) {
-  const youtubeMatch = url.match(
-    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/
-  );
-  if (youtubeMatch) {
-    return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
-  }
-  return url; // fallback por si es otro tipo
-}
-  
 </script>
 
 <div class="container_emprendedor">

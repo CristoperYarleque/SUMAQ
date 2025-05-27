@@ -95,6 +95,7 @@
     }
   
     .noticia_card:hover {
+      background-color: #f8bbd0;
       transform: translateY(-6px);
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12); /* Hover más sutil */
     }
