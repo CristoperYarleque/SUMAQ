@@ -1,18 +1,24 @@
 <script>
   import { registerUser } from "$lib/api";
   import { goto } from "$app/navigation";
+  import Cargando from "$lib/components/cargando/Cargando.svelte";
   import { LogOut } from "lucide-svelte";
 
+  let cargando = false;
   let name = "",
     email = "",
     password = "",
     role = "entrepreneur";
+    
 
   const handleRegister = async () => {
     try {
+      cargando = true;
       const { code } = await registerUser({ name, email, password, role });
+      cargando = false;
       code === 201 && goto("/login");
     } catch (err) {
+      cargando = false;
       name = "";
       email = "";
       password = "";
@@ -34,51 +40,55 @@
   </div>
 
   <div class="login-form">
-    <button class="button_logout" on:click={handleLogin}
-      ><LogOut class="w-1 h-1 " /></button
-    >
-    <img src="/logo_inicio.png" alt="Logo Llama" class="llama-logo" />
-    <h1 class="Bienvenida">Registro</h1>
-    <form on:submit|preventDefault={handleRegister}>
-      <input
-        bind:value={name}
-        type="text"
-        placeholder="Nombre completo"
-        required
-        class="inputregister"
-      />
-      <input
-        bind:value={email}
-        type="email"
-        placeholder="Correo Electrónico"
-        required
-        class="inputregister"
-      />
-      <input
-        bind:value={password}
-        type="password"
-        placeholder="Contraseña"
-        required
-        class="inputregister"
-      />
+    {#if cargando}
+      <Cargando />
+    {:else}
+      <button class="button_logout" on:click={handleLogin}
+        ><LogOut class="w-1 h-1 " /></button
+      >
+      <img src="/logo_inicio.png" alt="Logo Llama" class="llama-logo" />
+      <h1 class="Bienvenida">Registro</h1>
+      <form on:submit|preventDefault={handleRegister}>
+        <input
+          bind:value={name}
+          type="text"
+          placeholder="Nombre completo"
+          required
+          class="inputregister"
+        />
+        <input
+          bind:value={email}
+          type="email"
+          placeholder="Correo Electrónico"
+          required
+          class="inputregister"
+        />
+        <input
+          bind:value={password}
+          type="password"
+          placeholder="Contraseña"
+          required
+          class="inputregister"
+        />
 
-      <div class="role-toggle">
-        <label class:active={role === "entrepreneur"}>
-          <input type="radio" bind:group={role} value="entrepreneur" />
-          <span class="iconsseleccionregister">
-            <img src="/emprendedor.png" alt="Emprende" class="emprende" /> Emprendedor
-          </span>
-        </label>
-        <label class:active={role === "client"}>
-          <input type="radio" bind:group={role} value="client" />
-          <span class="iconsseleccionregister">
-            <img src="/cliente.png" alt="Cliente" class="cliente" /> Cliente
-          </span>
-        </label>
-      </div>
+        <div class="role-toggle">
+          <label class:active={role === "entrepreneur"}>
+            <input type="radio" bind:group={role} value="entrepreneur" />
+            <span class="iconsseleccionregister">
+              <img src="/emprendedor.png" alt="Emprende" class="emprende" /> Emprendedor
+            </span>
+          </label>
+          <label class:active={role === "client"}>
+            <input type="radio" bind:group={role} value="client" />
+            <span class="iconsseleccionregister">
+              <img src="/cliente.png" alt="Cliente" class="cliente" /> Cliente
+            </span>
+          </label>
+        </div>
 
-      <button type="submit" class="login-button">Registrarse</button>
-    </form>
+        <button type="submit" class="login-button">Registrarse</button>
+      </form>
+    {/if}
   </div>
 </div>
 
