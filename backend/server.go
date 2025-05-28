@@ -42,7 +42,7 @@ func main() {
 	r := chi.NewRouter()
 
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
@@ -74,8 +74,13 @@ func main() {
 
 	r.Mount("/v1", v1Router)
 
-	fmt.Println("Listening on port 3005")
-	err = http.ListenAndServe(":3005", r)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3005"
+	}
+
+	fmt.Println("Listening on port", port)
+	err = http.ListenAndServe(":"+port, r)
 	if err != nil {
 		log.Fatal(err)
 	}
