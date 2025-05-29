@@ -34,6 +34,7 @@ type Products struct {
 	CategoryId   int
 	CategoryName string
 	Role         string
+	Percentage   float64
 }
 
 type FilterProducts struct {
@@ -127,6 +128,7 @@ func (c *productsService) GetProducts(ctx context.Context, filterProducts Filter
 			CategoryId:   product.CategoryId,
 			CategoryName: product.CategoryName,
 			Role:         product.Role,
+			Percentage:   product.Percentage,
 		}
 	}
 

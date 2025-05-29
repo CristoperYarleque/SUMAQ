@@ -34,6 +34,7 @@ type Products struct {
 	CategoryId   int
 	CategoryName string
 	Role         string
+	Percentage   float64
 }
 
 type FilterProducts struct {
@@ -113,7 +114,8 @@ func (c *productsModel) GetProducts(ctx context.Context, filterProducts FilterPr
 		p.description,
 		p.category_id,
 		c.name,
-		u.role
+		u.role,
+		p.percentage
 		FROM products p
 		INNER JOIN categories c ON c.id = p.category_id
 		INNER JOIN users u ON u.id = p.entrepreneur_id
@@ -148,6 +150,7 @@ func (c *productsModel) GetProducts(ctx context.Context, filterProducts FilterPr
 			&product.CategoryId,
 			&product.CategoryName,
 			&product.Role,
+			&product.Percentage,
 		)
 		if err != nil {
 			log.Println("Error Scan:", err.Error())

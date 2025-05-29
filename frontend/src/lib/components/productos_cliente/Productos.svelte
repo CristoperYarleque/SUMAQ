@@ -178,6 +178,9 @@
             <div class="producto_card" class:hidden={!showProducts}>
               {#if producto.Role === "admin"}
                 <span class="pack_badge">Pack/Promoción</span>
+                {#if producto.Percentage > 0}
+                  <span class="pack_badge_percentage">{producto.Percentage}%</span>
+                {/if}
               {/if}
               <img src={producto.Url} alt={producto.Name} />
               <h4>{producto.Name}</h4>
@@ -211,6 +214,14 @@
     position: absolute;
     top: 0.5rem;
     right: 1rem;
+  }
+  .pack_badge_percentage {
+    color: var(--title-color_2);
+    font-size: 0.9rem;
+    font-weight: bold;
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
   }
   .emprendedor_admin_badge {
     color: var(--title-color_2);
