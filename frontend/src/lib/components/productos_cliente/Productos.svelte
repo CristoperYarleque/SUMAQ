@@ -217,7 +217,7 @@
   }
   .pack_badge_percentage {
     color: var(--title-color_2);
-    font-size: 0.9rem;
+    font-size: 2rem;
     font-weight: bold;
     position: absolute;
     top: 0.5rem;
