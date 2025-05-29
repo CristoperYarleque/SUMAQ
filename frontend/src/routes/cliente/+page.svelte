@@ -118,7 +118,7 @@
     {:else if noticias}
       <Noticias />
     {:else if promociones}
-      <Promociones />
+      <Promociones on:changeToProducts={handleProductos} />
     {/if}
   </div>
 </div>

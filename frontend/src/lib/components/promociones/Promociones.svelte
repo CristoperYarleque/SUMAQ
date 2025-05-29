@@ -3,6 +3,9 @@
   import { token } from "$lib/stores/auth";
   import { getPromociones } from "$lib/api";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   let tokenId = "";
   let promociones = [];
@@ -48,7 +51,7 @@
   {:else}
     <div class="banners">
       {#each promociones as promocion}
-        <div class="banner">
+        <div class="banner" on:click={() => dispatch('changeToProducts')}>
           <img src={promocion.Url} alt={promocion.Description} />
           <div class="banner_texto">
             <h2>{promocion.Description}</h2>
