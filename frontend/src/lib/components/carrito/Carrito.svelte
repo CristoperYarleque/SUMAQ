@@ -156,6 +156,7 @@
     font-size: 1rem;
     border-radius: 4px;
     border: 2px solid var(--title-color_2);
+    cursor: pointer;
   }
 
   .carrito_controls .remove {
