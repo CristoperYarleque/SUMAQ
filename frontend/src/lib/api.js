@@ -147,6 +147,15 @@ export async function getEmprendedores(token, entrepreneurId, type) {
   return res.json();
 }
 
+export async function getEmprendedor(token, entrepreneurId) {
+  const res = await authFetch(`${API_BASE}/entrepreneurs/${entrepreneurId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    "Content-Type": "application/json",
+  });
+  if (!res.ok) throw new Error("Error al obtener emprendedor");
+  return res.json();
+}
+
 export async function createEmprendedor(token, data) {
   const res = await authFetch(`${API_BASE}/info-entrepreneurs`, {
     method: "POST",
@@ -223,5 +232,36 @@ export async function getChatbot(token) {
     "Content-Type": "application/json",
   });
   if (!res.ok) throw new Error("Error al obtener chatbot");
+  return res.json();
+}
+
+export async function getReactionInfo(token, userId, newsId) {
+  const res = await authFetch(`${API_BASE}/news-reactions?userId=${userId}&newsId=${newsId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+     "Content-Type": "application/json",
+  });
+  if (!res.ok) throw new Error('Error al obtener información de reacciones');
+  return res.json();
+}
+
+export async function upsertReaction(token, data) {
+  const res = await authFetch(`${API_BASE}/news-reactions`, {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}` 
+    },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('Error al registrar reacción');
+  return res.json();
+}
+
+export async function deleteReaction(token, userId, newsId) {
+  const res = await authFetch(`${API_BASE}/news-reactions?userId=${userId}&newsId=${newsId}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Error al eliminar reacción');
   return res.json();
 }

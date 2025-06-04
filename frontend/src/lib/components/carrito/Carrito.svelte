@@ -4,6 +4,8 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
+   const regaloId = "REGALO_BOLSA";
+
   // Eliminar un producto completamente del carrito
   function removeFromCart(id) {
     cart.update((items) => items.filter((item) => item.ProductId !== id));
@@ -29,6 +31,29 @@
     );
   }
 
+  // Alternar bolsa de regalo
+  function toggleRegalo() {
+    const yaExiste = $cart.some(item => item.ProductId === regaloId);
+    cart.update(items => {
+      if (yaExiste) {
+        return items.filter(item => item.ProductId !== regaloId);
+      } else {
+        return [
+          ...items,
+          {
+            ProductId: regaloId,
+            Name: "Bolsa de regalo",
+            Price: 2.99,
+            cantidad: 1,
+            Url: "/bolsa.png"
+          }
+        ];
+      }
+    });
+  }
+
+  $: tieneRegalo = $cart.some(item => item.ProductId === regaloId);
+
   $: total = $cart.reduce((sum, item) => sum + item.cantidad * item.Price, 0);
 
   function confirmarPedido() {
@@ -45,10 +70,12 @@
     <ul class="carrito_list">
       {#each $cart as item}
         <li class="carrito_item">
-          <div>
-            <strong>{item.Name}</strong><br />
-            S/. {item.Price.toFixed(2)} x {item.cantidad} =
-            <strong>S/. {(item.Price * item.cantidad).toFixed(2)}</strong>
+          <div class="carrito_item_left">
+            <img class="carrito_item_img" src={item.Url} alt={item.Name} />
+            <div>
+              <p><strong>{item.Name}</strong></p>
+              <p>S/. {item.Price.toFixed(2)} x {item.cantidad} = <strong>S/. {(item.Price * item.cantidad).toFixed(2)}</strong></p>
+            </div>
           </div>
           <div class="carrito_controls">
             <button on:click={() => decreaseQty(item.ProductId)}>-</button>
@@ -62,6 +89,13 @@
         </li>
       {/each}
     </ul>
+    <div class="regalo_toggle">
+      {#if !tieneRegalo}
+        <button on:click={toggleRegalo}>
+        {tieneRegalo ? "Quitar bolsa de regalo" : "Agregar bolsa de regalo (+ S/ 2.99)"}
+      </button>
+      {/if}
+    </div>
     <div class="carrito_total_container">
       <p class="carrito_total color_title">
         Total: <strong>S/. {total.toFixed(2)}</strong>
@@ -88,6 +122,19 @@
     overflow-y: auto;
     height: 100%;
     color: var(--text-color);
+  }
+
+  .carrito_item_left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .carrito_item_img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
   }
 
   .carrito_item {
@@ -158,4 +205,26 @@
     padding: 2rem;
     border-radius: 0.5rem;
   }
+
+  .regalo_toggle {
+  margin-top: 1.5rem;
+  text-align: end;
+}
+
+.regalo_toggle button {
+  padding: 10px 20px;
+  background-color: var(--secondary-color);
+  border: 2px dashed var(--title-color_2);
+  color: var(--text-color);
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.regalo_toggle button:hover {
+  background-color: #ff85a2;
+  color: white;
+  border-style: none;
+}
 </style>

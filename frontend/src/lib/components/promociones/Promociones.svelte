@@ -87,13 +87,15 @@
 
   .banners {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    flex-wrap: wrap;
+    /* flex-direction: column; */
+    gap: 1rem;
+    padding: 0 0 2rem 0;
   }
 
   .banner {
     position: relative;
-    width: 100%;
+    width: 340px;
     height: 300px;
     border-radius: 16px;
     overflow: hidden;

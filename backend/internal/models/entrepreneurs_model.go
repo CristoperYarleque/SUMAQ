@@ -21,12 +21,14 @@ type BodyEntrepreneurUpdate struct {
 }
 
 type FilterEntrepreneurs struct {
-	CategoryId int
+	CategoryId     int
+	EntrepreneurId int
 }
 
 type EntrepreneursModelInterface interface {
 	GetEntrepreneurs(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs, querier interfaces.SQLQuerier) ([]*Entrepreneurs, error)
 	UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate, querier interfaces.SQLQuerier) error
+	GetEntrepreneur(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs, querier interfaces.SQLQuerier) (*Entrepreneurs, error)
 }
 type entrepreneursModel struct {
 	Db *interfaces.SQLConnInterface
@@ -87,6 +89,42 @@ func (c *entrepreneursModel) GetEntrepreneurs(ctx context.Context, filterEntrepr
 	}
 
 	return entrepreneurs, nil
+}
+
+func (c *entrepreneursModel) GetEntrepreneur(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs, querier interfaces.SQLQuerier) (*Entrepreneurs, error) {
+	queryParams := []interface{}{
+		filterEntrepreneurs.EntrepreneurId,
+	}
+
+	query := `
+		SELECT 
+		u.id, 
+		u.name, 
+		u.email,
+		u.url,
+		u.role
+		FROM users u
+		WHERE u.id = ?
+		AND u.role IN ("entrepreneur", "admin")
+	`
+
+	rows := querier.QueryRowContext(ctx, query, queryParams...)
+
+	entrepreneur := &Entrepreneurs{}
+	err := rows.Scan(
+		&entrepreneur.Id,
+		&entrepreneur.Name,
+		&entrepreneur.Email,
+		&entrepreneur.Url,
+		&entrepreneur.Role,
+	)
+
+	if err != nil {
+		log.Printf("[FATAL] Error executing query: %v", err)
+		return nil, err
+	}
+
+	return entrepreneur, nil
 }
 
 func (c *entrepreneursModel) UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate, querier interfaces.SQLQuerier) error {

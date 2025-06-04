@@ -97,6 +97,7 @@
     --primary-color: #ebb2bd;
     --secondary-color: #ede9e4;
     --login-color: #a0bea5;
+    --text-color: #333;
     --title-color_1: #b17d62;
   }
   .container {
@@ -176,7 +177,8 @@
 
   .role-toggle label.active {
     background: var(--primary-color);
-    color: white;
+    color: var(--text-color);
+    /* color: white; */
   }
 
   .role-toggle input {

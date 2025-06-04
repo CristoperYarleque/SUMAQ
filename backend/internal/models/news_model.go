@@ -12,6 +12,7 @@ type News struct {
 	NewsId      int
 	Title       string
 	Content     string
+	Url         string
 	PublishedAt string
 }
 
@@ -84,7 +85,8 @@ func (c *newsModel) GetNews(ctx context.Context, filterNews FilterNews, querier 
 		id, 
 		title, 
 		content,
-		published_at
+		published_at,
+		url
 		FROM news
 		WHERE published_at BETWEEN ? AND ? 
 		ORDER BY 1 DESC;	
@@ -112,6 +114,7 @@ func (c *newsModel) GetNews(ctx context.Context, filterNews FilterNews, querier 
 			&new.Title,
 			&new.Content,
 			&new.PublishedAt,
+			&new.Url,
 		)
 		if err != nil {
 			log.Println("Error Scan:", err.Error())

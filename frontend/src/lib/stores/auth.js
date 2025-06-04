@@ -3,7 +3,7 @@ import { writable } from "svelte/store";
 export const users = writable({});
 export const token = writable(null);
 
-export function login({ UserId, Token, Name, Role }) {
+export function login({ UserId, Token, Name, Role}) {
   const userData = { name: Name, role: Role, userId: UserId };
   users.set(userData);
   token.set(Token);

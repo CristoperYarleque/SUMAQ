@@ -1,12 +1,13 @@
 <script>
-  import { LogOut } from "lucide-svelte";
+  import { ArrowRight, ClipboardList, Presentation, FolderHeart } from "lucide-svelte";
   import { onMount } from "svelte";
   import Capacitacion from "$lib/components/capacitaciones/Capacitacion.svelte";
   import Bienestar from "$lib/components/bienestar_emocional/Bienestar.svelte";
   import Productos from "$lib/components/productos_emprendedor/Productos.svelte";
   import Emprendedor from "$lib/components/emprendedor/Emprendedor.svelte";
   import Chatbot from "$lib/components/chatbot/Chatbot.svelte";
-  import { logout, users } from "$lib/stores/auth";
+  import { getEmprendedor } from "$lib/api";
+  import { logout, users, token } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
 
   let productos = false;
@@ -14,7 +15,10 @@
   let bienestarEmocional = false;
   let emprendedor = false;
   let logo = true;
+  let entrepreneurId = "";
+  let tokenId = "";
   let name = "";
+  let logoEntrepreneur = "";
 
   function handleProductos() {
     productos = true;
@@ -53,35 +57,60 @@
     goto("/login");
   }
 
-  onMount(() => {
+
+  async function handleEmprendedores(tokenId, entrepreneurId) {
+    try {
+      const { data } = await getEmprendedor(tokenId, entrepreneurId);
+      logoEntrepreneur = data.Url;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  onMount(async () => {
     users.subscribe((user) => {
-      name = user.name;
+      if (user) {
+        entrepreneurId = user.userId;
+        name = user.name;
+      }
     });
+
+    token.subscribe(async (token) => {
+      if (token) {
+        tokenId = token;
+      }
+    });
+
+    await handleEmprendedores(tokenId, entrepreneurId);
   });
 </script>
 
 <div class="container_emprendedor">
   <div class="container_emprendedor_left">
-    <button class="button_emprendedor" on:click={handleEmprendedor}
-      >{name.toUpperCase()}</button
-    >
-    <button class="button_emprendedor" on:click={handleProductos}
-      >INVENTARIO</button
-    >
-    <button class="button_emprendedor" on:click={handleCapacitaciones}
-      >CAPACITACIONES</button
-    >
-    <button class="button_emprendedor" on:click={handleBienestarEmocional}
-      >BIENESTAR EMOCIONAL</button
-    >
+    <button class="button_emprendedor" on:click={handleEmprendedor}>
+      <img src={logoEntrepreneur} alt="logo" class="logo_emprendedor" /><br>
+      {name.toUpperCase()}
+    </button>
+    <button class="button_emprendedor" on:click={handleProductos}>
+      <p><ClipboardList size="40" /></p>
+      INVENTARIO
+    </button>
+    <button class="button_emprendedor" on:click={handleCapacitaciones}>
+      <p><Presentation size="40" /></p>
+      CAPACITACIONES
+    </button>
+    <button class="button_emprendedor" on:click={handleBienestarEmocional}>
+      <p><FolderHeart size="40" /></p>
+      BIENESTAR EMOCIONAL
+    </button>
     <button class="button_logout" on:click={handleLogout}>
-      CERRAR SESIÓN <LogOut size="20" />
+      CERRAR SESIÓN <ArrowRight size="20" />
     </button>
   </div>
   <div class="container_emprendedor_right">
     <Chatbot />
     {#if emprendedor}
-      <Emprendedor />
+      <Emprendedor on:logoUpdated={async () => await handleEmprendedores(tokenId, entrepreneurId)} />
     {:else if productos}
       <Productos />
     {:else if logo}
@@ -103,6 +132,7 @@
     --text-color: #333;
     --hover-color: #f29dae;
     --background-light: #f9f9f9;
+    --title-color_2: #a0bea5;
   }
 
   .container_emprendedor {
@@ -124,9 +154,12 @@
   .button_emprendedor {
     font-size: 1.1rem;
     font-weight: 600;
-    color: white;
+    /* color: white; */
+    color: var(--text-color);
     background: none;
-    border: 2px solid white;
+    /* border: 2px solid white; */
+    border: none;
+    /* border: 2px solid black; */
     padding: 0.5rem 1rem;
     border-radius: 20px;
     cursor: pointer;
@@ -134,8 +167,17 @@
   }
 
   .button_emprendedor:hover {
-    background-color: white;
-    color: var(--primary-color);
+    /* background-color: white; */
+    /* color: var(--primary-color); */
+    color: white;
+  }
+
+  .logo_emprendedor {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    object-fit: cover;
   }
 
   .button_logout {
@@ -145,6 +187,7 @@
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border: 1px solid var(--title-color_2);
     display: flex;
     align-items: center;
     gap: 0.5rem;

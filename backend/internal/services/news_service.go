@@ -12,6 +12,7 @@ type News struct {
 	NewsId      int
 	Title       string
 	Content     string
+	Url         string
 	PublishedAt string
 }
 
@@ -102,6 +103,7 @@ func (c *newsService) GetNews(ctx context.Context, filterNews FilterNews) ([]*Ne
 			Title:       news.Title,
 			Content:     news.Content,
 			PublishedAt: news.PublishedAt,
+			Url:         news.Url,
 		}
 	}
 

@@ -27,7 +27,7 @@
 
 <div class="producto-card">
   <p class="producto-nombre">{product.Name}</p>
-  <p class="producto-precio">${product.Price}</p>
+  <p class="producto-precio">S/ {product.Price.toFixed(2)}</p>
   <img class="producto-imagen" src={product.Url} alt={product.Name} />
   <p class="producto-descripcion">{product.Description}</p>
   <p class="producto-categoria">{product.CategoryName}</p>

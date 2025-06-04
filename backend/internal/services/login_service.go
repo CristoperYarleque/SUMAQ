@@ -13,6 +13,7 @@ type Login struct {
 	UserId int
 	Name   string
 	Role   string
+	Url    string
 	Token  string
 }
 
@@ -85,6 +86,7 @@ func (c *loginService) LoginUser(ctx context.Context, bodyLogin BodyLogin) (*Log
 		UserId: user.ID,
 		Name:   user.Name,
 		Role:   user.Role,
+		Url:    user.Url,
 		Token:  token,
 	}
 

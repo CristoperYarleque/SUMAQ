@@ -354,6 +354,9 @@
       .pack_badge {
         color: white;
       }
+      .pack_badge_percentage {
+        color: white;
+      }
     }
   }
 

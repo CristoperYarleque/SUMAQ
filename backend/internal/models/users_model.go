@@ -14,6 +14,7 @@ type Users struct {
 	Email    string
 	Password string
 	Role     string
+	Url      string
 }
 
 type BodyUser struct {
@@ -91,7 +92,8 @@ func (c *usersModel) GetUser(ctx context.Context, filterUser FilterUser, querier
 		name, 
 		email, 
 		password, 
-		role 
+		role,
+		url
 		FROM users 
 		WHERE email = ? AND role IN (?, 'admin')
 	`
@@ -105,6 +107,7 @@ func (c *usersModel) GetUser(ctx context.Context, filterUser FilterUser, querier
 		&user.Email,
 		&user.Password,
 		&user.Role,
+		&user.Url,
 	)
 
 	if err != nil {

@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { LogOut, ShoppingCart } from "lucide-svelte";
+  import { ArrowRight, ShoppingCart, ShoppingBag, Newspaper, SquarePercent } from "lucide-svelte";
   import { logout, users } from "$lib/stores/auth";
   import { goto } from "$app/navigation";
   import Promociones from "$lib/components/promociones/Promociones.svelte";
@@ -90,13 +90,20 @@
 
 <div class="container_cliente">
   <div class="container_cliente_left">
-    <button class="button_cliente" on:click={handleProductos}>PRODUCTOS</button>
-    <button class="button_cliente" on:click={handleNoticias}>NOTICIAS</button>
-    <button class="button_cliente" on:click={handlePromociones}
-      >PROMOCIONES</button
-    >
+    <button class="button_cliente" on:click={handleProductos}>
+      <p><ShoppingBag size="40" /></p>
+      PRODUCTOS
+    </button>
+    <button class="button_cliente" on:click={handleNoticias}>
+      <p><Newspaper size="40" /></p>
+      NOTICIAS
+    </button>
+    <button class="button_cliente" on:click={handlePromociones}>
+      <p><SquarePercent size="40" /></p>
+      PROMOCIONES
+    </button>
     <button class="button_logout" on:click={handleLogout}>
-      CERRAR SESIÓN <LogOut size="20" />
+      CERRAR SESIÓN <ArrowRight size="20" />
     </button>
   </div>
   <div class="container_cliente_right">
@@ -157,9 +164,11 @@
   .button_cliente {
     font-size: 1.1rem;
     font-weight: 600;
-    color: white;
+    /* color: white; */
+    color: var(--text-color);
     background: none;
-    border: 2px solid white;
+    border: none;
+    /* border: 2px solid white; */
     padding: 0.5rem 1rem;
     border-radius: 20px;
     cursor: pointer;
@@ -167,8 +176,9 @@
   }
 
   .button_cliente:hover {
-    background-color: white;
-    color: var(--primary-color);
+    /* background-color: white; */
+    /* color: var(--primary-color); */
+    color: white;
   }
 
   .button_logout {
@@ -179,6 +189,9 @@
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid var(--title-color_2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .button_logout:hover {

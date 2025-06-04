@@ -20,12 +20,14 @@ type BodyEntrepreneurUpdate struct {
 }
 
 type FilterEntrepreneurs struct {
-	CategoryId int
+	CategoryId     int
+	EntrepreneurId int
 }
 
 type EntrepreneursServiceInterface interface {
 	GetEntrepreneurs(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs) ([]*Entrepreneurs, error)
 	UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate) error
+	GetEntrepreneur(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs) (*Entrepreneurs, error)
 }
 
 type entrepreneursService struct {
@@ -81,6 +83,33 @@ func (c *entrepreneursService) GetEntrepreneurs(ctx context.Context, filterEntre
 	}
 
 	return entrepreneursResponse, nil
+}
+
+func (c *entrepreneursService) GetEntrepreneur(ctx context.Context, filterEntrepreneurs FilterEntrepreneurs) (*Entrepreneurs, error) {
+	dbPtr, err := c.getConn(ctx)
+	if err != nil {
+		return nil, err
+	}
+	db := *dbPtr
+
+	filterEntrepreneursModel := models.FilterEntrepreneurs{
+		EntrepreneurId: filterEntrepreneurs.EntrepreneurId,
+	}
+
+	entrepreneur, err := c.entrepreneursModel.GetEntrepreneur(ctx, filterEntrepreneursModel, db)
+	if err != nil {
+		return nil, err
+	}
+	if entrepreneur == nil {
+		return nil, nil
+	}
+	return &Entrepreneurs{
+		Id:    entrepreneur.Id,
+		Name:  entrepreneur.Name,
+		Email: entrepreneur.Email,
+		Url:   entrepreneur.Url,
+		Role:  entrepreneur.Role,
+	}, nil
 }
 
 func (c *entrepreneursService) UpdateUrlEntrepreneur(ctx context.Context, entrepreneurId int, bodyEntrepreneurUpdate BodyEntrepreneurUpdate) error {

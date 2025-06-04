@@ -10,6 +10,9 @@
   } from "$lib/api";
   import Cargando from "$lib/components/cargando/Cargando.svelte";
   import { getEmbedUrl } from "$lib/helpers/utils";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   let emprendedores = [];
   let tokenId = "";
@@ -88,6 +91,7 @@
         });
         if (code === 200) {
           await handleEmprendedores(tokenId, entrepreneurId, type);
+          dispatch("logoUpdated");
           clearPreview();
         }
       }

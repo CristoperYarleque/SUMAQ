@@ -11,6 +11,7 @@ func (config ConnectionConfig) EntrepreneursRouter() chi.Router {
 
 	r.Get("/", driver.GetEntrepreneurs)
 	r.Put("/{id}", driver.UpdateUrlEntrepreneur)
+	r.Get("/{id}", driver.GetEntrepreneur)
 
 	return r
 }
